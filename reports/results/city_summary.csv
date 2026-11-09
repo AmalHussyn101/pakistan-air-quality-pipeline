@@ -1,0 +1,7 @@
+city,avg_aqi,avg_pm25,avg_visibility_km,max_aqi,severe_days,hazardous_days
+Lahore,168.9,91.2,9.74,500,201,116
+Faisalabad,162.7,83.8,10.46,500,155,108
+Multan,161.8,79.4,11.16,500,164,93
+Peshawar,154.3,74.5,11.08,500,162,78
+Karachi,115.4,46.1,12.42,500,34,6
+Islamabad,106.2,41.8,14.55,288,38,0

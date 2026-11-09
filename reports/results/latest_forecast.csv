@@ -1,0 +1,19 @@
+city,based_on_data_up_to,forecast_date,days_ahead,predicted_aqi,predicted_visibility_km,predicted_smog_level,health_advice
+Faisalabad,2026-11-08,2026-11-09,1,436.1,2.42,Hazardous,Emergency level. Stay indoors; schools and outdoor work should pause.
+Faisalabad,2026-11-08,2026-11-10,2,433.1,0.69,Hazardous,Emergency level. Stay indoors; schools and outdoor work should pause.
+Faisalabad,2026-11-08,2026-11-11,3,413.3,1.03,Hazardous,Emergency level. Stay indoors; schools and outdoor work should pause.
+Islamabad,2026-11-08,2026-11-09,1,156.0,9.65,Moderate,"Unhealthy. Children, elderly and patients should limit time outdoors."
+Islamabad,2026-11-08,2026-11-10,2,177.8,8.59,Moderate,"Unhealthy. Children, elderly and patients should limit time outdoors."
+Islamabad,2026-11-08,2026-11-11,3,186.4,8.25,Moderate,"Unhealthy. Children, elderly and patients should limit time outdoors."
+Karachi,2026-11-08,2026-11-09,1,172.4,7.04,Moderate,"Unhealthy. Children, elderly and patients should limit time outdoors."
+Karachi,2026-11-08,2026-11-10,2,179.6,6.3,Moderate,"Unhealthy. Children, elderly and patients should limit time outdoors."
+Karachi,2026-11-08,2026-11-11,3,181.1,6.3,Moderate,"Unhealthy. Children, elderly and patients should limit time outdoors."
+Lahore,2026-11-08,2026-11-09,1,366.3,2.33,Severe,"Very unhealthy. Wear a mask, avoid outdoor exercise, keep windows closed."
+Lahore,2026-11-08,2026-11-10,2,380.5,0.6,Hazardous,Emergency level. Stay indoors; schools and outdoor work should pause.
+Lahore,2026-11-08,2026-11-11,3,389.9,0.05,Hazardous,Emergency level. Stay indoors; schools and outdoor work should pause.
+Multan,2026-11-08,2026-11-09,1,351.2,3.28,Severe,"Very unhealthy. Wear a mask, avoid outdoor exercise, keep windows closed."
+Multan,2026-11-08,2026-11-10,2,366.0,2.28,Hazardous,Emergency level. Stay indoors; schools and outdoor work should pause.
+Multan,2026-11-08,2026-11-11,3,376.0,1.81,Hazardous,Emergency level. Stay indoors; schools and outdoor work should pause.
+Peshawar,2026-11-08,2026-11-09,1,381.7,2.5,Severe,"Very unhealthy. Wear a mask, avoid outdoor exercise, keep windows closed."
+Peshawar,2026-11-08,2026-11-10,2,364.3,1.71,Hazardous,Emergency level. Stay indoors; schools and outdoor work should pause.
+Peshawar,2026-11-08,2026-11-11,3,365.0,2.06,Hazardous,Emergency level. Stay indoors; schools and outdoor work should pause.

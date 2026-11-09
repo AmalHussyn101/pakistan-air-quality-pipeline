@@ -1,0 +1,94 @@
+# =============================================================================
+# config.yaml - ALL settings of the pipeline live here.
+# To change how the pipeline behaves, change this file (not the code).
+# =============================================================================
+
+project:
+  name: "Pakistan Air Quality and Smog Forecasting Pipeline"
+
+# ---------------------------------------------------------------------------
+# Where files are read from and saved to (relative to the main project folder)
+# ---------------------------------------------------------------------------
+paths:
+  raw_data: "data/raw/pakistan_air_quality.csv"        # made by src/generate_data.py
+  clean_data: "data/processed/clean_data.parquet"      # made by src/clean.py
+  features_data: "data/processed/features.parquet"     # made by src/features.py
+  models_dir: "models"                                 # trained Spark models
+  figures_dir: "reports/figures"                       # PNG charts
+  results_dir: "reports/results"                       # CSV results
+  report_file: "reports/summary_report.md"             # final written summary
+  logs_dir: "logs"                                     # one log file per run
+
+# ---------------------------------------------------------------------------
+# Spark settings (kept small so it runs on a normal laptop)
+# ---------------------------------------------------------------------------
+spark:
+  app_name: "PakistanAirQualityPipeline"
+  master: "local[2]"          # use 2 CPU cores
+  driver_memory: "1g"         # max RAM for Spark. Use "2g" if your laptop has 8 GB+ RAM
+  shuffle_partitions: 4       # small data = few pieces
+  log_level: "ERROR"          # hide Spark's long WARN messages
+
+# ---------------------------------------------------------------------------
+# Data generation
+# ---------------------------------------------------------------------------
+data:
+  regenerate: false           # true = create the synthetic CSV again every run
+  start_date: "2023-01-01"
+  end_date: "2026-11-08"      # last day of data ("yesterday")
+  cities: ["Lahore", "Faisalabad", "Multan", "Peshawar", "Islamabad", "Karachi"]
+
+# ---------------------------------------------------------------------------
+# Cleaning rules: values outside these ranges are sensor errors -> treated as missing
+# ---------------------------------------------------------------------------
+cleaning:
+  valid_ranges:
+    temperature_c: [-10, 55]
+    humidity_pct: [0, 100]
+    wind_speed_kmh: [0, 120]
+    rainfall_mm: [0, 400]
+    pm25: [0, 1000]
+    pm10: [0, 2000]
+    co2_ppm: [350, 600]
+    no2_ppb: [0, 300]
+    so2_ppb: [0, 300]
+    co_ppm: [0, 50]
+    ozone_ppb: [0, 300]
+
+# ---------------------------------------------------------------------------
+# What we predict
+#   horizon 1 = next day (today, if the data ends yesterday)
+#   horizon 2 = the day after that (tomorrow)
+#   horizon 3 = the day after tomorrow
+# ---------------------------------------------------------------------------
+targets:
+  regression: ["aqi", "visibility_km"]   # model 1: numbers
+  classification: "smog_level"           # model 2: category (Low/Moderate/Severe/Hazardous)
+  horizons: [1, 2, 3]
+
+# ---------------------------------------------------------------------------
+# Train / test split by TIME (never test on the past, like real forecasting)
+# Training = before this date, Testing = from this date onwards
+# The test period contains two smog seasons (Nov 2025 and Oct-Nov 2026)
+# ---------------------------------------------------------------------------
+split:
+  test_start_date: "2025-10-01"
+
+# ---------------------------------------------------------------------------
+# Model training and tuning
+# ---------------------------------------------------------------------------
+training:
+  quick_run: false     # true = no cross-validation (fast test run, ~3-5 minutes)
+  cv_folds: 3          # cross-validation folds
+  parallelism: 1       # models trained at the same time during tuning (keep 1 on small laptops)
+  seed: 42
+  grids:               # hyperparameter values tried by cross-validation
+    lr_reg_param: [0.0, 0.1]
+    lr_elastic_net: [0.0]
+    rf_num_trees: [60]
+    rf_max_depth: [6, 10]
+    gbt_max_iter: [40]
+    gbt_max_depth: [3, 5]
+    logreg_reg_param: [0.0, 0.01]
+    rfc_num_trees: [60]
+    rfc_max_depth: [6, 10]

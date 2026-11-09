@@ -1,0 +1,10 @@
+target,horizon_days,type,best_model,rmse,model_path,accuracy,f1
+aqi,1,regression,Linear Regression,35.799,models\aqi_h1,,
+aqi,2,regression,Linear Regression,40.865,models\aqi_h2,,
+aqi,3,regression,Linear Regression,43.876,models\aqi_h3,,
+visibility_km,1,regression,Random Forest,2.469,models\visibility_km_h1,,
+visibility_km,2,regression,Linear Regression,2.781,models\visibility_km_h2,,
+visibility_km,3,regression,Linear Regression,2.9,models\visibility_km_h3,,
+smog_level,1,classification,Logistic Regression,,models\smog_level_h1,0.815,0.815
+smog_level,2,classification,Logistic Regression,,models\smog_level_h2,0.782,0.78
+smog_level,3,classification,Logistic Regression,,models\smog_level_h3,0.771,0.769

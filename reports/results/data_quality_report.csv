@@ -1,0 +1,18 @@
+check,count
+Raw rows,8478
+Badly written city names fixed,20
+Duplicate rows removed,30
+Impossible values in humidity_pct,10
+Impossible values in pm25,15
+Missing values filled in temperature_c,168
+Missing values filled in humidity_pct,178
+Missing values filled in wind_speed_kmh,168
+Missing values filled in rainfall_mm,0
+Missing values filled in pm25,182
+Missing values filled in pm10,168
+Missing values filled in co2_ppm,0
+Missing values filled in no2_ppb,168
+Missing values filled in so2_ppb,168
+Missing values filled in co_ppm,168
+Missing values filled in ozone_ppb,168
+Clean rows,8448

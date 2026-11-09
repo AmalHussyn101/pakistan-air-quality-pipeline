@@ -1,0 +1,25 @@
+target,horizon_days,model,best_params,rmse,mae,r2
+aqi,1,Baseline (same as today),-,41.271,24.967,0.787
+aqi,1,Linear Regression,"regParam=0.1, elasticNetParam=0.0",35.799,22.578,0.84
+aqi,1,Random Forest,"numTrees=60, maxDepth=6",37.347,23.474,0.826
+aqi,1,Gradient-Boosted Trees,"maxIter=40, maxDepth=3",38.581,24.233,0.814
+aqi,2,Baseline (same as today),-,48.538,29.924,0.706
+aqi,2,Linear Regression,"regParam=0.1, elasticNetParam=0.0",40.865,26.306,0.792
+aqi,2,Random Forest,"numTrees=60, maxDepth=10",43.509,27.675,0.764
+aqi,2,Gradient-Boosted Trees,"maxIter=40, maxDepth=3",42.85,27.639,0.771
+aqi,3,Baseline (same as today),-,53.412,32.675,0.645
+aqi,3,Linear Regression,"regParam=0.1, elasticNetParam=0.0",43.876,28.55,0.76
+aqi,3,Random Forest,"numTrees=60, maxDepth=10",45.544,29.205,0.742
+aqi,3,Gradient-Boosted Trees,"maxIter=40, maxDepth=3",44.521,28.6,0.753
+visibility_km,1,Baseline (same as today),-,2.868,1.942,0.786
+visibility_km,1,Linear Regression,"regParam=0.0, elasticNetParam=0.0",2.487,1.856,0.839
+visibility_km,1,Random Forest,"numTrees=60, maxDepth=10",2.469,1.868,0.842
+visibility_km,1,Gradient-Boosted Trees,"maxIter=40, maxDepth=3",2.561,1.936,0.83
+visibility_km,2,Baseline (same as today),-,3.344,2.334,0.71
+visibility_km,2,Linear Regression,"regParam=0.1, elasticNetParam=0.0",2.781,2.134,0.799
+visibility_km,2,Random Forest,"numTrees=60, maxDepth=10",2.799,2.176,0.797
+visibility_km,2,Gradient-Boosted Trees,"maxIter=40, maxDepth=3",2.882,2.216,0.785
+visibility_km,3,Baseline (same as today),-,3.587,2.51,0.666
+visibility_km,3,Linear Regression,"regParam=0.0, elasticNetParam=0.0",2.9,2.254,0.782
+visibility_km,3,Random Forest,"numTrees=60, maxDepth=10",2.905,2.272,0.781
+visibility_km,3,Gradient-Boosted Trees,"maxIter=40, maxDepth=3",3.005,2.316,0.766
