@@ -226,3 +226,5 @@ data/processed/
 models/
 logs/
 *.code-workspace
+hs_err_pid*.log
+replay_pid*.log
