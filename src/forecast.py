@@ -9,6 +9,7 @@ Prints a clear table in the terminal (with a short reason for each day) and save
 reports/results/latest_forecast.csv
 """
 
+import builtins
 import os
 import sys
 
@@ -56,12 +57,18 @@ def reason(r):
     return ", ".join(why[:3]) or "normal conditions"
 
 
-def print_table(out, base_date):
+def print_table(out, base_date, save_to=None):
     use_color = sys.stdout.isatty()
     if use_color and os.name == "nt":
         os.system("")                      # turns on colours in the Windows terminal
     col = (lambda lvl, txt: f"{COLORS[lvl]}{txt}{RESET}") if use_color else (lambda lvl, txt: txt)
     bold = (lambda t: f"{BOLD}{t}{RESET}") if use_color else (lambda t: t)
+
+    lines = []
+
+    def print(text=""):                      # print to the screen and keep a copy for the text file
+        builtins.print(text)
+        lines.append(text)
 
     line = "=" * 104
     print("\n" + line)
@@ -80,6 +87,29 @@ def print_table(out, base_date):
                   f"   {r['reason']}")
     print("\n  AQI: 0-150 Low | 151-200 Moderate | 201-300 Severe | 301-500 Hazardous")
     print(line + "\n")
+    if save_to:
+        import re
+        plain = re.sub(r"\033\[[0-9;]*m", "", "\n".join(lines))   # remove colour codes for the file
+        save_to.write_text(plain, encoding="utf-8")
+
+
+WIND_CHANGES = [-4.0, 0.0, 4.0, 8.0, 12.0]      # km/h added to the forecast wind
+RAIN_OPTIONS = [-1.0, 0.0, 2.0, 5.0, 10.0, 20.0]  # mm of rain on the day (-1 = keep the forecast)
+
+
+def what_if(model, rows, cfg, logger):
+    """WHAT-IF simulator: AQI under different wind and rain on each forecast day.
+    Built only with Spark expressions (explode), so no Python worker is needed."""
+    sc = (rows
+          .withColumn("wind_change", F.explode(F.array(*[F.lit(x) for x in WIND_CHANGES])))
+          .withColumn("rain_choice", F.explode(F.array(*[F.lit(x) for x in RAIN_OPTIONS])))
+          .withColumn("t_wind_speed_kmh", F.greatest(F.col("t_wind_speed_kmh") + F.col("wind_change"), F.lit(0.5)))
+          .withColumn("t_rainfall_mm", F.when(F.col("rain_choice") < 0, F.col("t_rainfall_mm"))
+                      .otherwise(F.col("rain_choice"))))
+    pdf = to_pandas(model.transform(sc).select("city", "horizon", "wind_change", "rain_choice", "prediction"))
+    pdf["days_ahead"] = pdf.pop("horizon").astype(int)
+    pdf["predicted_aqi"] = pdf.pop("prediction").clip(0, 500).round(0)
+    save_csv(pdf, cfg, "what_if_scenarios.csv", logger)
 
 
 def run(spark, cfg, logger):
@@ -93,6 +123,8 @@ def run(spark, cfg, logger):
     for name in ["aqi", "visibility_km", "smog_level"]:
         model = load_model(f"{paths['models_dir']}/{name}")
         preds[name] = to_pandas(model.transform(rows).select("city", "horizon", "prediction"))
+        if name == "aqi":
+            what_if(model, rows, cfg, logger)
     base = to_pandas(rows.select("city", "horizon", "target_date", "aqi", "t_temperature_c", "t_humidity_pct",
                                  "t_wind_speed_kmh", "t_rainfall_mm", "t_is_crop_burning_season"))
     for name, p in preds.items():
@@ -118,7 +150,10 @@ def run(spark, cfg, logger):
     out = out.assign(_o=order).sort_values(["_o", "city", "days_ahead"], ascending=[False, True, True]).drop(columns="_o")
 
     save_csv(out, cfg, "latest_forecast.csv", logger)
-    print_table(out, last_day)
+    from pathlib import Path
+    table_file = Path(cfg["paths"]["results_dir"]) / "latest_forecast_table.txt"
+    print_table(out, last_day, save_to=table_file)
+    logger.info("Saved forecast table -> %s", table_file)
     for city, g in out.groupby("city"):
         logger.info("FORECAST %-10s next 7 days AQI: %s", city, " ".join(f"{a:.0f}" for a in g["predicted_aqi"]))
     rows.unpersist()

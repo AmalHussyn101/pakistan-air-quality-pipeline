@@ -23,19 +23,21 @@ No one has to press a button.
 ## How it works
 
 ```
- live data -> clean -> features -> train* -> forecast -> monitor -> alerts -> report
+ live data -> quality checks -> clean -> anomaly detection -> features -> train* -> forecast -> monitor -> alerts -> report
                                   (*only when needed)
 ```
 
 | Step | File | What it does | Technology |
 |---|---|---|---|
 | 1. Ingest | `src/ingest.py` | Downloads **real** hourly PM2.5, PM10, NO₂, SO₂, CO, ozone, CO₂ and dust (CAMS), plus temperature, humidity, wind, rain and visibility, from Open-Meteo for 6 cities since 2023. Also downloads the **7-day weather forecast**. Data is aggregated to daily values. Updates are incremental, and the step falls back to the cache when offline. | Python (urllib), pandas |
+| Quality | `src/quality.py` | **Data quality gate:** checks freshness, missing values, valid ranges and frozen data. Gives every city a health status (Operational / Warning / Faulty) and stops the pipeline if every city's data is faulty. | pandas |
 | 2. Clean | `src/clean.py` | Removes duplicates, turns impossible values into missing, and fills gaps from neighbouring days. Then **calculates AQI (US-EPA formula), visibility and smog level in Spark**, and writes a data-quality report and city insights. | **PySpark DataFrame API, Window functions** |
+| Anomaly | `src/anomaly.py` | **Anomaly detection:** KMeans clustering on standardised pollutants and weather, plus a spike rule (PM2.5 more than double its 7-day average). It flags unusual days that could mean a fire, a chemical emission or a dust storm. | **PySpark MLlib (KMeans)** |
 | 3. Features | `src/features.py` | Builds one row per day and horizon (1–7). Each row holds today's pollution and weather, yesterday's values, 3- and 7-day averages, and the **forecast weather of the target day** (wind, rain, temperature, humidity) plus its season, smog season and crop-burning season. | **PySpark Window functions** |
 | 4. Train | `src/train.py` | **Model 1:** AQI and visibility (Linear Regression, Random Forest, Gradient-Boosted Trees). **Model 2:** smog level (Logistic Regression, Random Forest). Uses a time-based split, 3-fold cross-validation and hyperparameter tuning, with results for every horizon (1–7 days) compared against a baseline. The best model is saved. | **PySpark MLlib** |
 | 5. Forecast | `src/forecast.py` | The best models plus the real weather forecast give the **next 7 days** for each city, printed as a table in the terminal with a short reason for each day | **PySpark MLlib** |
 | 6. Monitor | `src/monitor.py` | Stores every forecast and compares it with the real data when that day arrives. If the error grows too large, it triggers automatic retraining. | pandas |
-| 7. Alerts | `src/alerts.py` | Writes the **Smog Early-Warning Bulletin**: alert level, trend, public advice, and actions for the education, industries, environment, traffic, motorway and health departments | pandas |
+| 7. Alerts | `src/alerts.py` | Writes the **Smog Early-Warning Bulletin**: alert level, trend, public advice and actions for each department. Adds **pollutant-specific rules** (NO₂ → traffic, SO₂ → industry, PM10 → construction, CO, ozone) and **disaster signs** (dust storm, heatwave, dense smog/fog, unusual events). It also writes **event triggers** as JSON payloads to `reports/events/` and keeps an event log. | pandas |
 | 8. Report | `src/evaluate.py` | Result tables, evaluation figures and a written summary report | Matplotlib |
 
 **Automation features**
@@ -44,6 +46,27 @@ No one has to press a button.
 - **Self-monitoring:** every forecast is checked against reality later (`forecast_monitoring.csv`).
 - **Config-driven:** every setting is in `config/config.yaml` (paths, Spark memory, cleaning rules, horizons, CV grid, retraining and alert thresholds).
 - **Logged:** every run writes `logs/pipeline_<date_time>.log`, recording each step, its duration, all alerts and any error.
+
+## Smart Environmental Monitoring System (interface)
+
+`start_app.bat` (or `streamlit run app/app.py`) opens the control room of the pipeline in the browser. It shows:
+The interface has three tabs:
+- **Live & Forecast**
+- **Alerts & Safety**
+- **Model & Pipeline**
+
+It shows:
+- **Live AQI of this hour** for all six cities, with PM2.5, PM10, NO₂, SO₂, CO, ozone, CO₂, temperature, wind and visibility (downloaded live from Open-Meteo).
+- **The 7-day forecast** from the PySpark models, with an **expected error range** for each day and a plain-language reason.
+- **Automatic alerts** and actions for authorities and the public, plus a **health guide** for each group.
+- A **what-if simulator**: how stronger wind or rain would change the AQI (scenario predictions made by the Spark model).
+- An **hour-by-hour animated forecast** for any chosen day (sun, clouds, rain, smog), with temperature, feels-like temperature, dew point, AQI, PM2.5, CO₂, humidity, wind and rain.
+- A **live map of Pakistan** with the current AQI at 36 places.
+- **Pollutant warnings, disaster signs and anomalies**, each with its recommended action.
+- **Data source health** (Operational / Warning / Faulty) and every data quality check.
+- An **accuracy tracker** comparing forecasts with real values, and the pipeline status, with a button to run it now.
+
+The pipeline still runs by itself every morning. The interface only reads its results and the live hourly data.
 
 ## How to run
 

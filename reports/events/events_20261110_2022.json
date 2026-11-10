@@ -1,0 +1,10 @@
+[
+  {
+    "time": "2026-11-10 20:22",
+    "city": "Faisalabad",
+    "type": "Pollutant warning",
+    "severity": "High",
+    "message": "Coarse dust high (construction, roads): 168 (limit 150)",
+    "action": "City administration: stop open construction, cover sand and soil, sprinkle water on roads."
+  }
+]

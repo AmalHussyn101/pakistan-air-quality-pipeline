@@ -1,0 +1,25 @@
+city,check,result_value,rule,status
+Faisalabad,Freshness,newest day 2026-11-09 (0 days old),newest day must be at most 3 days old,PASS
+Faisalabad,Completeness,0.0% missing (last 30 days),at most 10% missing,PASS
+Faisalabad,Validity,0 values outside allowed ranges,"e.g. 0 <= humidity <= 100, PM2.5 >= 0",PASS
+Faisalabad,Frozen data,same PM2.5 value 1 days in a row,fewer than 3 repeats,PASS
+Islamabad,Freshness,newest day 2026-11-09 (0 days old),newest day must be at most 3 days old,PASS
+Islamabad,Completeness,0.0% missing (last 30 days),at most 10% missing,PASS
+Islamabad,Validity,0 values outside allowed ranges,"e.g. 0 <= humidity <= 100, PM2.5 >= 0",PASS
+Islamabad,Frozen data,same PM2.5 value 1 days in a row,fewer than 3 repeats,PASS
+Karachi,Freshness,newest day 2026-11-09 (0 days old),newest day must be at most 3 days old,PASS
+Karachi,Completeness,0.0% missing (last 30 days),at most 10% missing,PASS
+Karachi,Validity,0 values outside allowed ranges,"e.g. 0 <= humidity <= 100, PM2.5 >= 0",PASS
+Karachi,Frozen data,same PM2.5 value 1 days in a row,fewer than 3 repeats,PASS
+Lahore,Freshness,newest day 2026-11-09 (0 days old),newest day must be at most 3 days old,PASS
+Lahore,Completeness,0.0% missing (last 30 days),at most 10% missing,PASS
+Lahore,Validity,0 values outside allowed ranges,"e.g. 0 <= humidity <= 100, PM2.5 >= 0",PASS
+Lahore,Frozen data,same PM2.5 value 1 days in a row,fewer than 3 repeats,PASS
+Multan,Freshness,newest day 2026-11-09 (0 days old),newest day must be at most 3 days old,PASS
+Multan,Completeness,0.0% missing (last 30 days),at most 10% missing,PASS
+Multan,Validity,0 values outside allowed ranges,"e.g. 0 <= humidity <= 100, PM2.5 >= 0",PASS
+Multan,Frozen data,same PM2.5 value 1 days in a row,fewer than 3 repeats,PASS
+Peshawar,Freshness,newest day 2026-11-09 (0 days old),newest day must be at most 3 days old,PASS
+Peshawar,Completeness,0.0% missing (last 30 days),at most 10% missing,PASS
+Peshawar,Validity,0 values outside allowed ranges,"e.g. 0 <= humidity <= 100, PM2.5 >= 0",PASS
+Peshawar,Frozen data,same PM2.5 value 1 days in a row,fewer than 3 repeats,PASS

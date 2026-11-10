@@ -1,0 +1,7 @@
+city,status,last_update,missing_pct_30d,out_of_range_30d,longest_repeat_days,days_of_history
+Faisalabad,Operational,2026-11-09,0.0,0,1,1409
+Islamabad,Operational,2026-11-09,0.0,0,1,1409
+Karachi,Operational,2026-11-09,0.0,0,1,1409
+Lahore,Operational,2026-11-09,0.0,0,1,1409
+Multan,Operational,2026-11-09,0.0,0,1,1409
+Peshawar,Operational,2026-11-09,0.0,0,1,1409

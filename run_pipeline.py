@@ -8,7 +8,9 @@ run_pipeline.py - the AUTOMATED Smog Early-Warning pipeline.
 
 Steps (in order):
     1. ingest    - downloads REAL air-quality and weather data (Open-Meteo), plus the 7-day weather forecast
+       quality   - data quality checks (freshness, missing values, ranges, frozen data) + data-source health
     2. clean     - PySpark: fix names, duplicates, impossible and missing values
+       anomaly   - PySpark MLlib KMeans + spike rule: finds unusual pollution days
     3. features  - PySpark: season, yesterday's pollution, 7-day averages, future targets
     4. train     - PySpark MLlib: AQI/visibility regression + smog classification, tuned with CV
     5. forecast  - PySpark: next 7 days for every city with the best saved models (printed as a table)
@@ -39,8 +41,8 @@ sys.path.insert(0, str(ROOT))
 
 from src import utils  # noqa: E402
 
-ALL_STEPS = ["ingest", "clean", "features", "train", "forecast", "monitor", "alerts", "evaluate"]
-SPARK_STEPS = {"clean", "features", "train", "forecast"}
+ALL_STEPS = ["ingest", "quality", "clean", "anomaly", "features", "train", "forecast", "monitor", "alerts", "evaluate"]
+SPARK_STEPS = {"clean", "anomaly", "features", "train", "forecast"}
 
 
 def retrain_reason(cfg):
@@ -49,10 +51,9 @@ def retrain_reason(cfg):
     best = Path(cfg["paths"]["results_dir"]) / "best_models.csv"
     if not best.exists():
         return "no trained models found"
-    names = cfg["targets"]["regression"] + [cfg["targets"]["classification"]]
-    missing = [f"{t}_h{h}" for t in names for h in cfg["targets"]["horizons"] if not (models / f"{t}_h{h}").exists()]
+    missing = [m for m in ["aqi", "visibility_km", "smog_level"] if not (models / m).exists()]
     if missing:
-        return f"models missing for {len(missing)} forecasts (e.g. {missing[0]})"
+        return f"saved model missing: {', '.join(missing)}"
     if (models / "RETRAIN_NEEDED").exists():
         return "monitoring found that forecast errors increased"
     age = (datetime.now() - datetime.fromtimestamp(best.stat().st_mtime)).days
@@ -109,6 +110,12 @@ def main():
             if step == "ingest":
                 from src import ingest
                 ingest.run(cfg, logger)
+            elif step == "quality":
+                from src import quality
+                quality.run(cfg, logger)
+            elif step == "anomaly":
+                from src import anomaly
+                anomaly.run(spark, cfg, logger)
             elif step == "clean":
                 from src import clean
                 clean.run(spark, cfg, logger)

@@ -1,0 +1,145 @@
+date,city,aqi,pm25,pm25_prev7,pm10,no2_ugm3,so2_ugm3,dust_ugm3,wind_speed_kmh,distance,kmeans_anomaly,spike,reason,type
+2026-11-05,Multan,228.0,153.05,74.11971428571428,172.608,21.033,14.179,35.708,4.554,3.8317017076657836,False,True,PM2.5 jumped to 153 (7-day average 74),Sudden spike
+2026-11-04,Multan,222.0,146.217,62.76728571428572,167.483,19.596,14.975,38.958,3.754,3.624537221510302,False,True,PM2.5 jumped to 146 (7-day average 63),Sudden spike
+2026-10-21,Faisalabad,235.0,160.062,74.816,183.796,78.429,21.946,44.208,3.858,2.0776839708364756,False,True,PM2.5 jumped to 160 (7-day average 75),Sudden spike
+2026-10-21,Lahore,193.0,115.163,53.14628571428572,134.092,68.563,27.342,35.292,4.054,1.9419454153632878,False,True,PM2.5 jumped to 115 (7-day average 53),Sudden spike
+2026-09-18,Faisalabad,195.0,118.679,55.26185714285714,125.583,62.225,20.954,13.333,4.837,3.3568005597887645,False,True,PM2.5 jumped to 119 (7-day average 55),Sudden spike
+2026-09-17,Faisalabad,181.0,98.658,48.72142857142857,103.542,36.729,17.537,9.0,5.958,2.826465669515291,False,True,PM2.5 jumped to 99 (7-day average 49),Sudden spike
+2026-07-02,Faisalabad,211.0,122.942,58.42914285714285,361.504,16.579,12.458,465.625,8.767,9.208821499081417,True,True,PM2.5 jumped to 123 (7-day average 58); unusual pollution mix (mostly desert dust),Sudden spike
+2026-07-02,Lahore,189.0,105.821,70.77328571428572,331.033,20.338,11.771,443.208,7.838,8.49008656915987,True,False,unusual pollution mix (mostly desert dust),Unusual pattern (KMeans)
+2026-07-01,Lahore,304.0,130.583,59.135285714285715,428.204,16.987,12.363,591.708,11.033,11.683904923513596,True,True,PM2.5 jumped to 131 (7-day average 59); unusual pollution mix (mostly desert dust),Sudden spike
+2026-06-13,Multan,187.0,106.804,70.24528571428571,324.679,10.55,6.508,431.5,8.854,8.230977608517364,True,False,unusual pollution mix (mostly desert dust),Unusual pattern (KMeans)
+2026-06-12,Faisalabad,248.0,107.825,66.83457142857144,388.458,10.983,8.946,550.375,14.671,10.662491274947225,True,False,unusual pollution mix (mostly desert dust),Unusual pattern (KMeans)
+2026-06-12,Lahore,235.0,88.196,51.44171428571428,379.204,13.163,6.887,575.25,13.425,10.750350823872465,True,False,unusual pollution mix (mostly desert dust),Unusual pattern (KMeans)
+2026-06-12,Multan,222.0,146.375,59.77442857142858,367.875,8.083,8.092,430.917,14.958,9.22514677999813,True,True,PM2.5 jumped to 146 (7-day average 60); unusual pollution mix (mostly desert dust),Sudden spike
+2026-06-12,Peshawar,158.0,65.954,28.175571428571427,142.233,33.463,9.046,154.042,8.442,2.3443123333152993,False,True,PM2.5 jumped to 66 (7-day average 28),Sudden spike
+2026-06-11,Lahore,175.0,89.258,47.70242857142857,271.725,24.254,11.729,358.542,10.7,6.7442966391146095,True,False,unusual pollution mix (mostly desert dust),Unusual pattern (KMeans)
+2026-06-02,Faisalabad,177.0,92.742,61.96857142857143,298.208,28.008,11.963,410.333,7.437,7.589842474812041,True,False,unusual pollution mix (mostly desert dust),Unusual pattern (KMeans)
+2026-06-01,Faisalabad,169.0,81.271,55.601857142857135,277.475,21.013,11.071,384.917,7.933,6.922575685601452,True,False,unusual pollution mix (mostly desert dust),Unusual pattern (KMeans)
+2026-06-01,Multan,168.0,79.092,49.43628571428571,245.612,10.288,7.525,324.458,8.862,5.8463732295187585,True,False,unusual pollution mix (mostly desert dust),Unusual pattern (KMeans)
+2026-05-31,Peshawar,152.0,56.854,27.291,103.087,24.913,8.704,90.042,5.908,1.043780254336407,False,True,PM2.5 jumped to 57 (7-day average 27),Sudden spike
+2026-05-30,Faisalabad,179.0,95.142,48.09057142857143,302.95,12.008,12.496,407.958,14.992,7.914494050558619,True,False,unusual pollution mix (mostly desert dust),Unusual pattern (KMeans)
+2026-05-30,Islamabad,152.0,56.325,22.029714285714284,169.221,18.263,8.933,234.458,11.608,3.9208378982270156,False,True,PM2.5 jumped to 56 (7-day average 22),Sudden spike
+2026-05-30,Peshawar,149.0,54.767,22.60828571428571,104.413,34.654,8.846,97.083,7.042,1.4414731913889234,False,True,PM2.5 jumped to 55 (7-day average 23),Sudden spike
+2026-05-29,Lahore,196.0,102.433,31.243000000000002,345.054,18.983,13.538,479.458,10.633,9.238217732598617,True,True,PM2.5 jumped to 102 (7-day average 31); unusual pollution mix (mostly desert dust),Sudden spike
+2026-05-11,Lahore,165.0,75.192,52.55857142857143,245.429,18.596,13.946,336.083,9.217,6.131469232446405,True,False,unusual pollution mix (mostly desert dust),Unusual pattern (KMeans)
+2026-05-10,Lahore,167.0,78.396,46.769285714285715,268.692,20.067,14.375,375.083,7.242,6.894832654449615,True,False,unusual pollution mix (mostly desert dust),Unusual pattern (KMeans)
+2026-05-09,Islamabad,151.0,55.696,24.005142857142857,139.221,28.529,14.775,173.458,4.796,2.9080010316755547,False,True,PM2.5 jumped to 56 (7-day average 24),Sudden spike
+2026-05-09,Lahore,160.0,68.117,41.52514285714285,240.913,22.196,16.883,325.5,5.292,6.058319419786399,True,False,unusual pollution mix (mostly desert dust),Unusual pattern (KMeans)
+2026-05-08,Faisalabad,223.0,95.25,40.46542857142857,369.558,22.671,14.029,543.958,8.112,10.264913999663577,True,True,PM2.5 jumped to 95 (7-day average 40); unusual pollution mix (mostly desert dust),Sudden spike
+2026-05-08,Islamabad,120.0,43.054,20.458142857142857,115.058,20.904,11.796,145.417,8.196,2.282795986263387,False,True,PM2.5 jumped to 43 (7-day average 20),Sudden spike
+2026-05-08,Lahore,155.0,61.646,38.09828571428572,258.279,12.179,12.225,383.083,7.55,6.926997975589625,True,False,unusual pollution mix (mostly desert dust),Unusual pattern (KMeans)
+2026-01-16,Lahore,357.0,253.65,181.0802857142857,256.383,93.625,45.183,5.042,2.825,5.917260979950456,True,False,unusual pollution mix (mostly fine particles),Unusual pattern (KMeans)
+2025-12-29,Faisalabad,374.0,262.246,130.30057142857143,264.642,82.846,53.75,0.708,2.717,5.752816977441447,False,True,PM2.5 jumped to 262 (7-day average 130),Sudden spike
+2025-12-15,Karachi,152.0,57.433,28.567285714285713,61.246,28.725,20.383,7.042,8.058,1.9392279374108918,False,True,PM2.5 jumped to 57 (7-day average 29),Sudden spike
+2025-11-11,Faisalabad,241.0,166.042,80.59814285714286,171.121,80.542,24.092,8.958,3.725,2.512239530394063,False,True,PM2.5 jumped to 166 (7-day average 81),Sudden spike
+2025-11-01,Karachi,163.0,72.421,33.188,82.179,50.033,24.842,18.417,7.792,2.659620314107122,False,True,PM2.5 jumped to 72 (7-day average 33),Sudden spike
+2025-10-22,Multan,193.0,114.858,53.57928571428571,126.521,33.379,13.996,21.375,2.254,2.8289812720210126,False,True,PM2.5 jumped to 115 (7-day average 54),Sudden spike
+2025-10-08,Karachi,116.0,41.6,19.458142857142857,119.363,33.192,22.321,139.875,6.446,3.1521179311751775,False,True,PM2.5 jumped to 42 (7-day average 19),Sudden spike
+2025-09-28,Multan,160.0,67.75,32.478,84.6,23.858,12.275,31.75,4.475,1.4425444237445306,False,True,PM2.5 jumped to 68 (7-day average 32),Sudden spike
+2025-09-17,Multan,144.0,53.067,22.233285714285717,86.037,22.888,6.85,61.833,7.288,2.1245951528881086,False,True,PM2.5 jumped to 53 (7-day average 22),Sudden spike
+2025-07-20,Faisalabad,184.0,76.313,46.55942857142857,322.05,20.154,8.121,497.0,7.496,8.975306988405258,True,False,unusual pollution mix (mostly desert dust),Unusual pattern (KMeans)
+2025-07-20,Lahore,214.0,86.063,50.050714285714285,363.521,29.208,9.471,551.667,5.475,10.2286088326289,True,False,unusual pollution mix (mostly desert dust),Unusual pattern (KMeans)
+2025-07-20,Multan,157.0,63.725,34.717285714285715,245.525,11.796,3.729,361.208,10.575,6.308653327130368,True,False,unusual pollution mix (mostly desert dust),Unusual pattern (KMeans)
+2025-06-21,Lahore,166.0,74.758,78.21742857142858,284.758,13.254,11.5,404.25,9.179,7.406548496233438,True,False,unusual pollution mix (mostly desert dust),Unusual pattern (KMeans)
+2025-06-20,Lahore,164.0,74.571,79.14542857142858,246.65,13.458,12.933,348.917,8.25,6.366097125828264,True,False,unusual pollution mix (mostly desert dust),Unusual pattern (KMeans)
+2025-06-16,Faisalabad,185.0,104.325,54.785285714285706,268.592,30.921,16.4,319.042,6.408,6.157648411704324,True,False,unusual pollution mix (mostly desert dust),Unusual pattern (KMeans)
+2025-06-16,Lahore,181.0,97.979,56.61557142857142,244.479,28.629,20.608,298.5,5.837,5.902112162198194,True,False,unusual pollution mix (mostly desert dust),Unusual pattern (KMeans)
+2025-06-14,Faisalabad,297.0,113.421,43.109,422.462,25.338,14.225,620.625,8.1,12.016280957502655,True,True,PM2.5 jumped to 113 (7-day average 43); unusual pollution mix (mostly desert dust),Sudden spike
+2025-06-14,Lahore,352.0,114.071,40.25599999999999,470.604,18.612,14.992,715.5,6.971,13.872057196522436,True,True,PM2.5 jumped to 114 (7-day average 40); unusual pollution mix (mostly desert dust),Sudden spike
+2025-06-13,Lahore,169.0,81.067,37.39528571428571,265.688,19.942,12.637,374.958,8.258,6.970297921878782,True,True,PM2.5 jumped to 81 (7-day average 37); unusual pollution mix (mostly desert dust),Sudden spike
+2025-05-25,Multan,184.0,102.488,45.12685714285714,321.362,11.163,10.096,433.542,10.196,8.314097559664393,True,True,PM2.5 jumped to 102 (7-day average 45); unusual pollution mix (mostly desert dust),Sudden spike
+2025-05-24,Faisalabad,177.0,92.962,66.53342857142857,281.663,25.329,16.383,383.542,11.217,7.111578491497446,True,False,unusual pollution mix (mostly desert dust),Unusual pattern (KMeans)
+2025-05-24,Lahore,169.0,81.013,75.44285714285715,260.146,16.617,13.646,359.042,10.458,6.4771935840766135,True,False,unusual pollution mix (mostly desert dust),Unusual pattern (KMeans)
+2025-05-24,Multan,173.0,86.729,35.77928571428571,257.013,10.8,9.354,334.708,12.642,6.434946390397081,True,True,PM2.5 jumped to 87 (7-day average 36); unusual pollution mix (mostly desert dust),Sudden spike
+2025-05-24,Peshawar,159.0,66.808,29.344285714285714,137.896,22.35,11.121,142.625,6.671,2.2818575339195415,False,True,PM2.5 jumped to 67 (7-day average 29),Sudden spike
+2025-05-23,Faisalabad,412.0,147.233,50.47514285714286,525.383,13.492,16.929,746.375,10.538,15.123202498504266,True,True,PM2.5 jumped to 147 (7-day average 50); unusual pollution mix (mostly desert dust),Sudden spike
+2025-05-23,Islamabad,164.0,73.575,25.95785714285714,238.538,27.183,14.467,346.0,9.275,6.090104177511045,True,True,PM2.5 jumped to 74 (7-day average 26); unusual pollution mix (mostly desert dust),Sudden spike
+2025-05-23,Lahore,332.0,111.004,64.76671428571429,453.471,13.804,13.783,679.708,10.463,13.19347547967736,True,False,unusual pollution mix (mostly desert dust),Unusual pattern (KMeans)
+2025-05-23,Multan,160.0,68.446,30.17214285714286,158.663,14.825,7.813,177.833,9.942,3.3284407082679794,False,True,PM2.5 jumped to 68 (7-day average 30),Sudden spike
+2025-05-23,Peshawar,163.0,72.267,21.756714285714285,194.296,24.329,11.442,241.083,5.525,4.289979157216733,False,True,PM2.5 jumped to 72 (7-day average 22),Sudden spike
+2025-05-22,Lahore,472.0,152.492,48.707142857142856,578.763,13.612,14.417,841.542,10.338,16.933582605305837,True,True,PM2.5 jumped to 152 (7-day average 49); unusual pollution mix (mostly desert dust),Sudden spike
+2025-05-07,Faisalabad,176.0,91.063,71.97942857142857,287.942,25.4,13.638,383.208,7.117,7.162871525453692,True,False,unusual pollution mix (mostly desert dust),Unusual pattern (KMeans)
+2025-05-06,Karachi,102.0,36.067,17.481571428571428,93.617,25.563,21.879,103.625,8.592,2.363912432501427,False,True,PM2.5 jumped to 36 (7-day average 17),Sudden spike
+2025-05-03,Multan,171.0,84.383,44.144999999999996,290.467,9.838,10.167,404.792,7.983,7.550764901279737,True,False,unusual pollution mix (mostly desert dust),Unusual pattern (KMeans)
+2025-05-03,Peshawar,133.0,48.288,22.913714285714285,71.654,29.937,10.833,47.708,4.571,0.9496858799282359,False,True,PM2.5 jumped to 48 (7-day average 23),Sudden spike
+2025-05-02,Islamabad,155.0,60.971,23.230428571428572,151.829,27.296,14.367,182.958,7.587,2.9865250412562685,False,True,PM2.5 jumped to 61 (7-day average 23),Sudden spike
+2025-05-02,Multan,169.0,81.587,37.245000000000005,263.633,8.763,10.446,351.042,8.233,6.813841755936079,True,True,PM2.5 jumped to 82 (7-day average 37); unusual pollution mix (mostly desert dust),Sudden spike
+2025-05-02,Peshawar,130.0,47.308,18.986428571428572,84.013,29.513,10.413,71.0,5.408,0.7795287691053169,False,True,PM2.5 jumped to 47 (7-day average 19),Sudden spike
+2025-05-01,Faisalabad,178.0,94.263,44.02485714285715,307.263,15.875,16.383,417.958,9.533,8.234997049086292,True,True,PM2.5 jumped to 94 (7-day average 44); unusual pollution mix (mostly desert dust),Sudden spike
+2025-05-01,Islamabad,142.0,52.121,17.538714285714285,152.404,26.317,15.033,208.292,8.95,3.463050016075444,False,True,PM2.5 jumped to 52 (7-day average 18),Sudden spike
+2025-05-01,Lahore,283.0,98.725,40.95657142857143,411.95,13.808,17.304,623.667,9.75,12.035456332730448,True,True,PM2.5 jumped to 99 (7-day average 41); unusual pollution mix (mostly desert dust),Sudden spike
+2025-04-30,Islamabad,112.0,39.892,14.583857142857141,98.95,30.613,13.117,120.792,8.692,2.459299520158935,False,True,PM2.5 jumped to 40 (7-day average 15),Sudden spike
+2025-04-30,Lahore,182.0,91.613,33.11185714285715,317.042,25.075,18.1,449.25,9.383,8.744732615245859,True,True,PM2.5 jumped to 92 (7-day average 33); unusual pollution mix (mostly desert dust),Sudden spike
+2025-04-29,Lahore,163.0,72.021,28.151714285714288,206.237,33.371,14.904,262.75,7.788,4.990454719985966,False,True,PM2.5 jumped to 72 (7-day average 28),Sudden spike
+2025-04-20,Karachi,140.0,51.387,21.77042857142857,183.675,14.8,11.746,254.5,11.629,4.174379117387926,False,True,PM2.5 jumped to 51 (7-day average 22),Sudden spike
+2025-04-19,Karachi,142.0,52.296,17.391285714285715,209.775,9.867,10.983,299.333,13.904,5.168453787825993,False,True,PM2.5 jumped to 52 (7-day average 17),Sudden spike
+2025-01-15,Faisalabad,411.0,280.863,177.47071428571425,284.254,93.475,51.7,1.0,2.833,6.079162762077012,True,False,unusual pollution mix (mostly fine particles),Unusual pattern (KMeans)
+2025-01-15,Lahore,261.0,185.604,142.45485714285715,188.783,127.808,60.417,1.167,2.092,6.819035528304894,True,False,unusual pollution mix (mostly sulphur dioxide),Unusual pattern (KMeans)
+2025-01-10,Faisalabad,404.0,277.104,178.92914285714284,279.463,83.571,48.133,0.083,3.613,6.000674786071908,True,False,unusual pollution mix (mostly fine particles),Unusual pattern (KMeans)
+2025-01-03,Lahore,282.0,206.842,156.36842857142855,212.192,102.488,51.996,9.292,2.183,5.915383761763386,True,False,unusual pollution mix (mostly sulphur dioxide),Unusual pattern (KMeans)
+2024-12-22,Faisalabad,425.0,288.025,209.54171428571428,291.808,86.25,52.238,4.375,3.475,6.092641479391699,True,False,unusual pollution mix (mostly fine particles),Unusual pattern (KMeans)
+2024-12-11,Faisalabad,247.0,171.667,85.63514285714288,173.733,65.521,33.867,0.708,3.288,1.828227642513304,False,True,PM2.5 jumped to 172 (7-day average 86),Sudden spike
+2024-11-08,Peshawar,169.0,81.717,38.784,126.367,36.417,10.5,8.75,3.779,1.9325991612804745,False,True,PM2.5 jumped to 82 (7-day average 39),Sudden spike
+2024-09-11,Karachi,107.0,37.179,18.448285714285714,168.188,14.575,6.758,315.333,14.508,4.6493633939302725,False,True,PM2.5 jumped to 37 (7-day average 18),Sudden spike
+2024-07-11,Lahore,175.0,89.842,39.568571428571424,150.296,44.321,15.425,54.083,4.892,2.7707827217163676,False,True,PM2.5 jumped to 90 (7-day average 40),Sudden spike
+2024-06-29,Peshawar,134.0,48.983,23.919,80.517,18.013,5.254,23.667,8.508,1.2953957558632208,False,True,PM2.5 jumped to 49 (7-day average 24),Sudden spike
+2024-06-28,Islamabad,159.0,67.629,33.752428571428574,119.837,14.108,11.925,52.542,7.646,2.7161366397631816,False,True,PM2.5 jumped to 68 (7-day average 34),Sudden spike
+2024-06-28,Peshawar,137.0,50.313,21.246857142857145,85.775,17.379,5.642,31.708,8.3,1.1634396056884606,False,True,PM2.5 jumped to 50 (7-day average 21),Sudden spike
+2024-06-27,Islamabad,157.0,64.15,28.46857142857143,126.221,18.763,10.725,83.042,10.729,2.201292566804118,False,True,PM2.5 jumped to 64 (7-day average 28),Sudden spike
+2024-06-22,Karachi,118.0,34.154,21.926142857142857,189.033,12.05,10.875,396.25,14.888,6.032409975628189,True,False,unusual pollution mix (mostly desert dust),Unusual pattern (KMeans)
+2024-06-22,Multan,158.0,66.013,36.61728571428571,241.029,23.3,5.029,440.583,4.667,7.336068353975925,True,False,unusual pollution mix (mostly desert dust),Unusual pattern (KMeans)
+2024-06-21,Multan,157.0,64.546,31.256571428571426,239.2,11.642,3.463,437.208,8.8,7.322237819697814,True,True,PM2.5 jumped to 65 (7-day average 31); unusual pollution mix (mostly desert dust),Sudden spike
+2024-06-20,Multan,156.0,62.45,25.53157142857143,207.975,15.321,4.692,367.292,13.896,6.023789681080219,True,True,PM2.5 jumped to 62 (7-day average 26); unusual pollution mix (mostly desert dust),Sudden spike
+2024-06-06,Faisalabad,155.0,61.383,38.124857142857145,217.446,23.971,7.579,376.167,9.163,6.122854588406637,True,False,unusual pollution mix (mostly desert dust),Unusual pattern (KMeans)
+2024-06-06,Lahore,157.0,63.421,34.639428571428574,260.379,30.333,12.463,490.292,9.713,8.201850379723982,True,False,unusual pollution mix (mostly desert dust),Unusual pattern (KMeans)
+2024-06-01,Karachi,125.0,42.783,19.47385714285714,204.333,10.254,5.408,418.458,17.021,6.555762359862539,True,True,PM2.5 jumped to 43 (7-day average 19); unusual pollution mix (mostly desert dust),Sudden spike
+2024-05-10,Faisalabad,161.0,70.363,32.90314285714285,164.279,19.596,13.529,176.625,11.825,3.481768659292996,False,True,PM2.5 jumped to 70 (7-day average 33),Sudden spike
+2024-05-10,Lahore,164.0,73.833,35.67114285714286,194.092,26.171,14.863,248.125,12.275,4.474543407630538,False,True,PM2.5 jumped to 74 (7-day average 36),Sudden spike
+2024-05-09,Lahore,164.0,74.492,29.931857142857147,198.038,22.583,13.175,266.833,11.013,4.8032020976071035,False,True,PM2.5 jumped to 74 (7-day average 30),Sudden spike
+2024-03-31,Karachi,129.0,46.725,20.589285714285715,159.021,16.704,9.883,265.25,13.529,4.153144678580601,False,True,PM2.5 jumped to 47 (7-day average 21),Sudden spike
+2024-03-22,Peshawar,122.0,44.025,21.67928571428572,88.633,24.229,5.25,64.75,6.171,1.935380370902165,False,True,PM2.5 jumped to 44 (7-day average 22),Sudden spike
+2024-01-18,Faisalabad,320.0,234.879,183.78457142857138,341.508,87.996,39.404,1.833,3.413,6.03681257250609,True,False,unusual pollution mix (mostly coarse dust),Unusual pattern (KMeans)
+2023-11-19,Karachi,181.0,97.738,41.395714285714284,150.237,25.017,17.933,6.167,10.95,2.8729101620136346,False,True,PM2.5 jumped to 98 (7-day average 41),Sudden spike
+2023-11-18,Karachi,165.0,75.429,33.78442857142857,114.804,29.175,17.75,4.625,11.796,2.5173935958744504,False,True,PM2.5 jumped to 75 (7-day average 34),Sudden spike
+2023-09-26,Karachi,155.0,61.629,32.669000000000004,229.875,29.621,11.837,402.583,10.187,6.732754902070836,True,False,unusual pollution mix (mostly desert dust),Unusual pattern (KMeans)
+2023-09-25,Karachi,170.0,70.679,25.378571428571426,294.483,13.583,5.688,563.833,15.292,9.520438889545787,True,True,PM2.5 jumped to 71 (7-day average 25); unusual pollution mix (mostly desert dust),Sudden spike
+2023-09-24,Karachi,122.0,42.2,22.293428571428567,196.775,10.154,4.804,381.208,19.004,5.942514882501507,True,False,unusual pollution mix (mostly desert dust),Unusual pattern (KMeans)
+2023-08-15,Multan,156.0,63.288,49.97857142857142,219.467,22.371,10.05,374.125,7.383,6.1033977731674405,True,False,unusual pollution mix (mostly desert dust),Unusual pattern (KMeans)
+2023-08-14,Faisalabad,153.0,58.458,60.75114285714286,200.421,15.283,6.029,359.958,10.379,5.852727318501229,True,False,unusual pollution mix (mostly desert dust),Unusual pattern (KMeans)
+2023-08-14,Multan,156.0,62.183,48.59471428571428,218.542,16.079,4.279,403.708,14.388,6.5399859642050755,True,False,unusual pollution mix (mostly desert dust),Unusual pattern (KMeans)
+2023-08-10,Faisalabad,160.0,68.663,61.45128571428571,217.446,21.604,7.838,360.042,9.675,5.914833892203004,True,False,unusual pollution mix (mostly desert dust),Unusual pattern (KMeans)
+2023-08-09,Lahore,168.0,79.421,58.671285714285716,228.217,34.321,12.837,351.833,7.033,6.060369329081407,True,False,unusual pollution mix (mostly desert dust),Unusual pattern (KMeans)
+2023-08-08,Faisalabad,166.0,77.479,54.158428571428566,227.571,37.904,8.917,353.5,6.792,6.023097871668429,True,False,unusual pollution mix (mostly desert dust),Unusual pattern (KMeans)
+2023-07-17,Multan,157.0,64.004,41.822,225.642,13.108,3.533,384.625,7.271,6.414586821458476,True,False,unusual pollution mix (mostly desert dust),Unusual pattern (KMeans)
+2023-07-09,Karachi,128.0,36.579,29.863142857142854,209.979,9.321,5.5,432.583,19.171,6.800363324818055,True,False,unusual pollution mix (mostly desert dust),Unusual pattern (KMeans)
+2023-07-08,Karachi,124.0,38.95,27.842285714285712,201.792,11.008,5.717,406.167,17.892,6.311488139837961,True,False,unusual pollution mix (mostly desert dust),Unusual pattern (KMeans)
+2023-07-01,Multan,152.0,56.679,42.466,205.379,28.992,5.071,361.958,7.863,5.913233020441739,True,False,unusual pollution mix (mostly desert dust),Unusual pattern (KMeans)
+2023-06-28,Multan,156.0,63.183,27.106714285714286,132.55,27.529,6.817,123.292,5.821,2.021233297380149,False,True,PM2.5 jumped to 63 (7-day average 27),Sudden spike
+2023-06-12,Karachi,155.0,61.196,18.322857142857142,93.071,27.421,34.458,9.917,15.117,4.351155651099682,False,True,PM2.5 jumped to 61 (7-day average 18),Sudden spike
+2023-03-10,Karachi,173.0,87.063,83.29242857142857,126.192,55.713,44.688,3.958,12.608,6.271719397875181,True,False,unusual pollution mix (mostly sulphur dioxide),Unusual pattern (KMeans)
+2023-03-09,Karachi,196.0,119.771,75.19242857142858,175.017,55.787,44.054,7.625,11.871,6.5857201155998935,True,False,unusual pollution mix (mostly sulphur dioxide),Unusual pattern (KMeans)
+2023-03-08,Karachi,184.0,103.229,71.03828571428572,153.079,53.312,60.467,11.333,11.221,7.336969424718197,True,False,unusual pollution mix (mostly sulphur dioxide),Unusual pattern (KMeans)
+2023-03-06,Karachi,168.0,79.988,61.90657142857143,118.521,41.496,43.258,9.917,13.175,5.892086500079453,True,False,unusual pollution mix (mostly sulphur dioxide),Unusual pattern (KMeans)
+2023-03-01,Karachi,164.0,74.15,31.976714285714284,115.996,36.546,27.783,23.708,9.908,3.2441898516062038,False,True,PM2.5 jumped to 74 (7-day average 32),Sudden spike
+2023-02-15,Multan,192.0,113.879,54.634,170.279,44.129,20.054,20.5,5.408,2.0659427562672925,False,True,PM2.5 jumped to 114 (7-day average 55),Sudden spike
+2023-02-03,Karachi,173.0,87.458,54.34628571428571,126.533,97.504,73.479,2.917,10.054,7.083966557940036,True,False,unusual pollution mix (mostly sulphur dioxide),Unusual pattern (KMeans)
+2023-02-02,Karachi,181.0,98.337,44.82785714285715,142.325,74.812,77.633,4.5,13.3,7.996903540238071,True,True,PM2.5 jumped to 98 (7-day average 45); unusual pollution mix (mostly sulphur dioxide),Sudden spike
+2023-01-18,Karachi,183.0,101.021,42.604142857142854,147.658,78.417,57.2,9.875,10.942,5.1636504071934235,False,True,PM2.5 jumped to 101 (7-day average 43),Sudden spike
+2023-01-18,Lahore,223.0,147.558,105.31128571428572,211.092,141.421,40.721,1.0,6.367,6.805176342946735,True,False,unusual pollution mix (mostly nitrogen dioxide),Unusual pattern (KMeans)
+2023-01-17,Karachi,168.0,79.125,47.07085714285714,117.583,47.279,59.929,12.958,12.013,5.987669297124452,True,False,unusual pollution mix (mostly sulphur dioxide),Unusual pattern (KMeans)
+2023-01-16,Karachi,154.0,60.375,50.90242857142857,96.442,35.283,60.396,22.708,12.075,6.235479898966153,True,False,unusual pollution mix (mostly sulphur dioxide),Unusual pattern (KMeans)
+2023-01-10,Karachi,189.0,110.392,58.07671428571429,162.804,88.117,84.129,9.583,10.263,8.011170907301949,True,False,unusual pollution mix (mostly sulphur dioxide),Unusual pattern (KMeans)
+2023-01-10,Lahore,287.0,212.1,204.81285714285715,304.179,156.4,30.779,2.542,5.838,8.936171931139496,True,False,unusual pollution mix (mostly nitrogen dioxide),Unusual pattern (KMeans)
+2023-01-09,Karachi,173.0,87.196,54.190428571428576,128.421,81.354,80.425,2.333,8.983,7.653732871226764,True,False,unusual pollution mix (mostly sulphur dioxide),Unusual pattern (KMeans)
+2023-01-09,Lahore,284.0,209.075,198.55814285714285,299.513,144.783,32.921,2.333,4.242,8.447421934138582,True,False,unusual pollution mix (mostly nitrogen dioxide),Unusual pattern (KMeans)
+2023-01-08,Karachi,173.0,87.096,47.24285714285714,125.829,71.021,82.842,3.5,12.4,8.344026562637115,True,False,unusual pollution mix (mostly sulphur dioxide),Unusual pattern (KMeans)
+2023-01-08,Lahore,264.0,189.054,189.42485714285712,270.65,128.638,26.704,1.792,6.196,6.8404853041150355,True,False,unusual pollution mix (mostly nitrogen dioxide),Unusual pattern (KMeans)
+2023-01-07,Lahore,302.0,225.854,183.35333333333332,322.825,133.479,33.117,1.0,4.821,8.686438676226595,True,False,unusual pollution mix (mostly nitrogen dioxide),Unusual pattern (KMeans)
+2023-01-06,Faisalabad,287.0,212.375,151.13,303.917,110.313,15.667,2.208,4.283,6.162647110020491,True,False,unusual pollution mix (mostly nitrogen dioxide),Unusual pattern (KMeans)
+2023-01-06,Lahore,291.0,216.558,176.7124,309.604,142.613,37.404,1.667,3.113,9.403096387819147,True,False,unusual pollution mix (mostly nitrogen dioxide),Unusual pattern (KMeans)
+2023-01-05,Faisalabad,278.0,203.471,138.04475,291.154,118.867,21.1,1.958,5.658,6.175606043840347,True,False,unusual pollution mix (mostly nitrogen dioxide),Unusual pattern (KMeans)
+2023-01-05,Lahore,302.0,226.112,164.3625,323.175,170.525,44.925,1.542,3.338,11.211774894614539,True,False,unusual pollution mix (mostly nitrogen dioxide),Unusual pattern (KMeans)
+2023-01-04,Lahore,274.0,198.833,152.87233333333333,284.621,161.746,48.563,1.625,3.842,9.565668308591729,True,False,unusual pollution mix (mostly nitrogen dioxide),Unusual pattern (KMeans)
+2023-01-03,Lahore,243.0,168.204,145.2065,241.292,144.708,45.133,2.958,4.363,8.207621882948414,True,False,unusual pollution mix (mostly nitrogen dioxide),Unusual pattern (KMeans)
+2023-01-02,Lahore,240.0,165.292,125.121,237.146,146.833,41.317,2.583,2.979,8.3445181100373,True,False,unusual pollution mix (mostly nitrogen dioxide),Unusual pattern (KMeans)

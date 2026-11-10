@@ -6,17 +6,17 @@ smog_level,4,Baseline (same as today),-,0.7278,0.7273,0.7268,0.7278
 smog_level,5,Baseline (same as today),-,0.7129,0.7122,0.7116,0.7129
 smog_level,6,Baseline (same as today),-,0.7063,0.7054,0.7046,0.7063
 smog_level,7,Baseline (same as today),-,0.706,0.7049,0.7038,0.706
-smog_level,1,Logistic Regression,regParam=0.0,0.7896,0.8005,0.8199,0.7896
-smog_level,2,Logistic Regression,regParam=0.0,0.7816,0.7918,0.8089,0.7816
-smog_level,3,Logistic Regression,regParam=0.0,0.7757,0.7851,0.8025,0.7757
-smog_level,4,Logistic Regression,regParam=0.0,0.771,0.7796,0.7962,0.771
-smog_level,5,Logistic Regression,regParam=0.0,0.765,0.7742,0.7899,0.765
-smog_level,6,Logistic Regression,regParam=0.0,0.7678,0.7748,0.7888,0.7678
-smog_level,7,Logistic Regression,regParam=0.0,0.7592,0.7653,0.78,0.7592
-smog_level,1,Random Forest Classifier,"numTrees=50, maxDepth=8",0.8148,0.8016,0.801,0.8148
-smog_level,2,Random Forest Classifier,"numTrees=50, maxDepth=8",0.8015,0.7888,0.7875,0.8015
-smog_level,3,Random Forest Classifier,"numTrees=50, maxDepth=8",0.7844,0.7702,0.7685,0.7844
-smog_level,4,Random Forest Classifier,"numTrees=50, maxDepth=8",0.7731,0.7578,0.7549,0.7731
-smog_level,5,Random Forest Classifier,"numTrees=50, maxDepth=8",0.7721,0.7564,0.7552,0.7721
-smog_level,6,Random Forest Classifier,"numTrees=50, maxDepth=8",0.7632,0.7468,0.7441,0.7632
-smog_level,7,Random Forest Classifier,"numTrees=50, maxDepth=8",0.7663,0.7499,0.7482,0.7663
+smog_level,1,Logistic Regression,regParam=0.0,0.8399,0.8363,0.8351,0.8399
+smog_level,2,Logistic Regression,regParam=0.0,0.8205,0.8167,0.8146,0.8205
+smog_level,3,Logistic Regression,regParam=0.0,0.8147,0.81,0.8074,0.8147
+smog_level,4,Logistic Regression,regParam=0.0,0.8159,0.8103,0.8081,0.8159
+smog_level,5,Logistic Regression,regParam=0.0,0.805,0.799,0.7961,0.805
+smog_level,6,Logistic Regression,regParam=0.0,0.8003,0.7935,0.7903,0.8003
+smog_level,7,Logistic Regression,regParam=0.0,0.791,0.7834,0.7806,0.791
+smog_level,1,Random Forest Classifier,"numTrees=50, maxDepth=8",0.8127,0.7987,0.7986,0.8127
+smog_level,2,Random Forest Classifier,"numTrees=50, maxDepth=8",0.7911,0.7758,0.7747,0.7911
+smog_level,3,Random Forest Classifier,"numTrees=50, maxDepth=8",0.7832,0.7671,0.7664,0.7832
+smog_level,4,Random Forest Classifier,"numTrees=50, maxDepth=8",0.7727,0.7561,0.7546,0.7727
+smog_level,5,Random Forest Classifier,"numTrees=50, maxDepth=8",0.7696,0.7519,0.7512,0.7696
+smog_level,6,Random Forest Classifier,"numTrees=50, maxDepth=8",0.7598,0.7423,0.7411,0.7598
+smog_level,7,Random Forest Classifier,"numTrees=50, maxDepth=8",0.7668,0.7485,0.7502,0.7668

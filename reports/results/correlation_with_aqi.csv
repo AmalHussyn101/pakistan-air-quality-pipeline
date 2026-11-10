@@ -1,13 +1,13 @@
 feature,correlation_with_aqi
 pm25,0.958
 pm10,0.831
+visibility_km,-0.823
 co_ugm3,0.712
 so2_ugm3,0.638
 no2_ugm3,0.56
 wind_speed_kmh,-0.406
 temperature_c,-0.354
 humidity_pct,0.188
-visibility_km,-0.188
 co2_ppm,0.184
 rainfall_mm,-0.116
 dust_ugm3,0.034

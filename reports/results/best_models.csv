@@ -1,4 +1,4 @@
 target,type,best_model,rmse,mae,r2,baseline_rmse,error_reduction_vs_baseline_pct,model_path,accuracy,f1,baseline_accuracy
-aqi,regression,Gradient-Boosted Trees,24.698,18.315,0.745,32.539,24.1,models\aqi,,,
-visibility_km,regression,Linear Regression,8.409,6.93,-0.785,2.842,-195.9,models\visibility_km,,,
-smog_level,classification,Logistic Regression,,,,,,models\smog_level,0.773,0.782,0.742
+aqi,regression,Gradient-Boosted Trees,24.336,18.158,0.752,32.539,25.2,models\aqi,,,
+visibility_km,regression,Linear Regression,3.283,2.476,0.747,4.912,33.2,models\visibility_km,,,
+smog_level,classification,Logistic Regression,,,,,,models\smog_level,0.813,0.807,0.742

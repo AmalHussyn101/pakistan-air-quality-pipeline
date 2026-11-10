@@ -8,8 +8,8 @@ Reads the live daily data and:
      same city (Spark Window functions); anything still missing gets the city's average
   4. CALCULATES the targets in Spark:
        * AQI with the official US-EPA formula (24-hour PM2.5 and PM10 breakpoints, 2024 update)
-       * visibility in km (weather-model visibility; if missing, estimated from PM2.5 and humidity
-         with the Koschmieder formula)
+       * visibility in km, from PM2.5 and humidity with the Koschmieder formula
+         (weather-model visibility ignores smog particles, so it is not used)
        * smog level from AQI: Low (0-150), Moderate (151-200), Severe (201-300), Hazardous (301+)
   5. saves a data-quality report and city insights (Spark group-by)
 
@@ -104,8 +104,7 @@ def run(spark, cfg, logger):
                                     F.pow(1 - F.least(F.col("humidity_pct"), F.lit(97.0)) / 100, -0.55))
     past = (past
             .withColumn("aqi", F.round(F.greatest(epa_aqi("pm25", PM25_BP, 1), epa_aqi("pm10", PM10_BP, 0))))
-            .withColumn("visibility_km", F.round(F.least(F.greatest(
-                F.coalesce(F.col("visibility_m") / 1000, estimated_vis), F.lit(0.05)), F.lit(30.0)), 2))
+            .withColumn("visibility_km", F.round(F.least(F.greatest(estimated_vis, F.lit(0.05)), F.lit(30.0)), 2))
             .withColumn("smog_level", F.when(F.col("aqi") <= 150, "Low").when(F.col("aqi") <= 200, "Moderate")
                         .when(F.col("aqi") <= 300, "Severe").otherwise("Hazardous")))
     future = (future.withColumn("aqi", F.lit(None).cast("double"))

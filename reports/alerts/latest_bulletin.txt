@@ -1,0 +1,96 @@
+==============================================================================
+SMOG EARLY-WARNING BULLETIN (automated)
+Based on data up to: 2026-11-09   |   Outlook: next 7 days
+Generated automatically by the PySpark pipeline from real Open-Meteo (CAMS) air-quality and weather data
+==============================================================================
+
+SUMMARY: 0 city(ies) Hazardous, 1 city(ies) Severe, 3 city(ies) Moderate, 2 city(ies) Low
+
+--- FAISALABAD : SEVERE (max AQI 287, trend falling) ---
+Outlook   : 2026-11-10: AQI 287, Severe
+            2026-11-11: AQI 283, Moderate
+            2026-11-12: AQI 235, Moderate
+            2026-11-13: AQI 236, Moderate
+            2026-11-14: AQI 236, Moderate
+            2026-11-15: AQI 210, Moderate
+            2026-11-16: AQI 175, Moderate
+Visibility: lowest 4.45 km
+Public    : Wear an N95 mask outdoors. Avoid outdoor exercise. Keep windows closed.
+Warnings  :
+  ! Pollutant warning: Coarse dust high (construction, roads): 168 (limit 150)
+Actions   :
+  - Education department: cancel outdoor school activities and sports.
+  - Environment department: increase patrols against crop-residue burning.
+  - City administration: water sprinkling on main roads to settle dust.
+  - Hospitals: prepare for more respiratory patients.
+  - City administration: stop open construction, cover sand and soil, sprinkle water on roads.
+
+--- LAHORE : MODERATE (max AQI 212, trend falling) ---
+Outlook   : 2026-11-10: AQI 212, Moderate
+            2026-11-11: AQI 198, Moderate
+            2026-11-12: AQI 203, Moderate
+            2026-11-13: AQI 190, Moderate
+            2026-11-14: AQI 200, Moderate
+            2026-11-15: AQI 190, Moderate
+            2026-11-16: AQI 190, Moderate
+Visibility: lowest 5.54 km
+Public    : Children, elderly and heart/lung patients should limit time outdoors.
+Actions   :
+  - Health department: issue advisory for sensitive groups.
+  - Environment department: monitor crop-burning hotspots.
+
+--- MULTAN : MODERATE (max AQI 191, trend steady) ---
+Outlook   : 2026-11-10: AQI 189, Moderate
+            2026-11-11: AQI 191, Moderate
+            2026-11-12: AQI 177, Moderate
+            2026-11-13: AQI 172, Moderate
+            2026-11-14: AQI 170, Moderate
+            2026-11-15: AQI 179, Moderate
+            2026-11-16: AQI 188, Moderate
+Visibility: lowest 5.42 km
+Public    : Children, elderly and heart/lung patients should limit time outdoors.
+Actions   :
+  - Health department: issue advisory for sensitive groups.
+  - Environment department: monitor crop-burning hotspots.
+
+--- PESHAWAR : MODERATE (max AQI 153, trend falling) ---
+Outlook   : 2026-11-10: AQI 153, Low
+            2026-11-11: AQI 146, Moderate
+            2026-11-12: AQI 140, Low
+            2026-11-13: AQI 140, Low
+            2026-11-14: AQI 135, Low
+            2026-11-15: AQI 126, Low
+            2026-11-16: AQI 123, Low
+Visibility: lowest 7.61 km
+Public    : Children, elderly and heart/lung patients should limit time outdoors.
+Actions   :
+  - Health department: issue advisory for sensitive groups.
+  - Environment department: monitor crop-burning hotspots.
+
+--- ISLAMABAD : LOW (max AQI 155, trend falling) ---
+Outlook   : 2026-11-10: AQI 155, Low
+            2026-11-11: AQI 148, Low
+            2026-11-12: AQI 134, Low
+            2026-11-13: AQI 126, Low
+            2026-11-14: AQI 131, Low
+            2026-11-15: AQI 134, Low
+            2026-11-16: AQI 132, Low
+Visibility: lowest 9.98 km
+Public    : Air is acceptable. No special precautions.
+Actions   :
+  - No action needed.
+
+--- KARACHI : LOW (max AQI 98, trend steady) ---
+Outlook   : 2026-11-10: AQI 93, Low
+            2026-11-11: AQI 95, Low
+            2026-11-12: AQI 89, Low
+            2026-11-13: AQI 94, Low
+            2026-11-14: AQI 96, Low
+            2026-11-15: AQI 96, Low
+            2026-11-16: AQI 98, Low
+Visibility: lowest 12.78 km
+Public    : Air is acceptable. No special precautions.
+Actions   :
+  - No action needed.
+
+AQI guide: 0-150 Low | 151-200 Moderate | 201-300 Severe | 301-500 Hazardous

@@ -1,9 +1,8 @@
-# Streamlit look and feel for the app (light, professional theme)
 [theme]
 base = "light"
-primaryColor = "#1e3a8a"
-backgroundColor = "#f8fafc"
-secondaryBackgroundColor = "#eef2f7"
+primaryColor = "#185FA5"
+backgroundColor = "#f6f7f9"
+secondaryBackgroundColor = "#eef1f5"
 textColor = "#0f172a"
 font = "sans serif"
 

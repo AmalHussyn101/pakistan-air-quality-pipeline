@@ -1,0 +1,73 @@
+
+========================================================================================================
+  7-DAY AIR QUALITY & SMOG FORECAST   |   real data up to 2026-11-09 (Open-Meteo / CAMS)
+========================================================================================================
+
+  FAISALABAD
+  Date       Day    AQI  Smog level  Visibility    Temp     Wind    Rain   Why
+  ----------------------------------------------------------------------------------------------------
+  2026-11-10 Tue    287  Severe          4.5 km    23 C    4 km/h  0.0 mm   calm wind traps smog, crop-burning season
+  2026-11-11 Wed    283  Moderate        4.6 km    23 C    4 km/h  0.1 mm   calm wind traps smog, crop-burning season
+  2026-11-12 Thu    235  Moderate        5.9 km    23 C    6 km/h  0.4 mm   crop-burning season
+  2026-11-13 Fri    236  Moderate        5.7 km    23 C    6 km/h  0.6 mm   calm wind traps smog, crop-burning season
+  2026-11-14 Sat    236  Moderate        6.6 km    21 C    6 km/h  0.0 mm   crop-burning season
+  2026-11-15 Sun    210  Moderate        6.4 km    21 C    5 km/h  0.0 mm   calm wind traps smog, crop-burning season
+  2026-11-16 Mon    175  Moderate        9.0 km    20 C    6 km/h  0.0 mm   calm wind traps smog, crop-burning season
+
+  LAHORE
+  Date       Day    AQI  Smog level  Visibility    Temp     Wind    Rain   Why
+  ----------------------------------------------------------------------------------------------------
+  2026-11-10 Tue    212  Moderate        5.5 km    23 C    3 km/h  0.0 mm   calm wind traps smog, crop-burning season
+  2026-11-11 Wed    198  Moderate        7.0 km    23 C    5 km/h  0.0 mm   calm wind traps smog, crop-burning season
+  2026-11-12 Thu    203  Moderate        6.4 km    23 C    4 km/h  0.0 mm   calm wind traps smog, crop-burning season
+  2026-11-13 Fri    190  Moderate        8.6 km    24 C    6 km/h  1.0 mm   crop-burning season
+  2026-11-14 Sat    200  Moderate        7.5 km    22 C    4 km/h  0.0 mm   calm wind traps smog, crop-burning season
+  2026-11-15 Sun    190  Moderate        8.8 km    21 C    6 km/h  0.0 mm   calm wind traps smog, crop-burning season
+  2026-11-16 Mon    190  Moderate        9.5 km    20 C    5 km/h  0.0 mm   calm wind traps smog, crop-burning season
+
+  MULTAN
+  Date       Day    AQI  Smog level  Visibility    Temp     Wind    Rain   Why
+  ----------------------------------------------------------------------------------------------------
+  2026-11-10 Tue    189  Moderate        7.7 km    25 C    4 km/h  0.0 mm   calm wind traps smog, crop-burning season
+  2026-11-11 Wed    191  Moderate        6.8 km    24 C    4 km/h  0.0 mm   calm wind traps smog, crop-burning season
+  2026-11-12 Thu    177  Moderate        6.4 km    24 C    6 km/h  0.0 mm   crop-burning season
+  2026-11-13 Fri    172  Moderate        5.4 km    23 C    8 km/h  0.0 mm   crop-burning season
+  2026-11-14 Sat    170  Moderate        7.7 km    23 C    8 km/h  0.0 mm   crop-burning season
+  2026-11-15 Sun    179  Moderate        8.7 km    22 C    5 km/h  0.0 mm   calm wind traps smog, crop-burning season
+  2026-11-16 Mon    188  Moderate        9.3 km    21 C    4 km/h  0.0 mm   calm wind traps smog, crop-burning season
+
+  ISLAMABAD
+  Date       Day    AQI  Smog level  Visibility    Temp     Wind    Rain   Why
+  ----------------------------------------------------------------------------------------------------
+  2026-11-10 Tue    155  Low            12.1 km    20 C    5 km/h  0.0 mm   calm wind traps smog, crop-burning season
+  2026-11-11 Wed    148  Low            10.0 km    19 C    5 km/h  1.9 mm   calm wind traps smog, crop-burning season
+  2026-11-12 Thu    134  Low            10.5 km    17 C    6 km/h 55.3 mm   calm wind traps smog, rain washes air, crop-burning season
+  2026-11-13 Fri    126  Low            10.0 km    17 C    8 km/h  7.2 mm   rain washes air, crop-burning season
+  2026-11-14 Sat    131  Low            12.4 km    17 C    7 km/h  0.0 mm   crop-burning season
+  2026-11-15 Sun    134  Low            14.2 km    17 C    6 km/h  0.0 mm   calm wind traps smog, crop-burning season
+  2026-11-16 Mon    132  Low            16.4 km    16 C    6 km/h  0.0 mm   crop-burning season
+
+  PESHAWAR
+  Date       Day    AQI  Smog level  Visibility    Temp     Wind    Rain   Why
+  ----------------------------------------------------------------------------------------------------
+  2026-11-10 Tue    153  Low             9.5 km    20 C    3 km/h  2.2 mm   calm wind traps smog, rain washes air, crop-burning season
+  2026-11-11 Wed    146  Moderate        8.9 km    19 C    2 km/h  0.0 mm   calm wind traps smog, crop-burning season
+  2026-11-12 Thu    140  Low             8.3 km    17 C    3 km/h  5.5 mm   calm wind traps smog, rain washes air, crop-burning season
+  2026-11-13 Fri    140  Low             7.6 km    16 C    3 km/h  0.5 mm   calm wind traps smog, crop-burning season, humid: fog/haze
+  2026-11-14 Sat    135  Low            10.3 km    16 C    4 km/h  0.0 mm   calm wind traps smog, crop-burning season
+  2026-11-15 Sun    126  Low            14.4 km    16 C    2 km/h  0.0 mm   calm wind traps smog, crop-burning season
+  2026-11-16 Mon    123  Low            16.3 km    15 C    3 km/h  0.0 mm   calm wind traps smog, cold air (inversion), crop-burning season
+
+  KARACHI
+  Date       Day    AQI  Smog level  Visibility    Temp     Wind    Rain   Why
+  ----------------------------------------------------------------------------------------------------
+  2026-11-10 Tue     93  Low            14.1 km    26 C    7 km/h  0.0 mm   crop-burning season
+  2026-11-11 Wed     95  Low            14.0 km    25 C    7 km/h  0.0 mm   crop-burning season
+  2026-11-12 Thu     89  Low            13.5 km    25 C    7 km/h  0.0 mm   crop-burning season
+  2026-11-13 Fri     94  Low            14.8 km    27 C    9 km/h  0.3 mm   crop-burning season
+  2026-11-14 Sat     96  Low            13.3 km    27 C    7 km/h  0.9 mm   crop-burning season
+  2026-11-15 Sun     96  Low            12.8 km    26 C    7 km/h  0.0 mm   crop-burning season
+  2026-11-16 Mon     98  Low            13.5 km    26 C    6 km/h  0.0 mm   calm wind traps smog, crop-burning season
+
+  AQI: 0-150 Low | 151-200 Moderate | 201-300 Severe | 301-500 Hazardous
+========================================================================================================

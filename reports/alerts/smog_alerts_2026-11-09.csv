@@ -1,43 +1,43 @@
-city,alert_level,worst_day,max_aqi,min_visibility_km,trend,daily_outlook,public_advice,authority_actions
-Faisalabad,Hazardous,2026-11-10,302,21.32,falling,"2026-11-10: AQI 299, Hazardous
-            2026-11-11: AQI 302, Hazardous
-            2026-11-12: AQI 237, Hazardous
-            2026-11-13: AQI 243, Hazardous
-            2026-11-14: AQI 243, Hazardous
-            2026-11-15: AQI 161, Severe
-            2026-11-16: AQI 156, Hazardous",Stay indoors. Seek medical help for breathing difficulty or chest pain.,Education department: close schools or move classes online. ; Industries department: stop brick kilns and smoke-emitting factories. ; Environment department: strictly enforce the ban on crop-residue burning. ; Traffic police: restrict heavy vehicles and smoke-emitting vehicles. ; Hospitals: activate smog emergency counters.
-Lahore,Severe,2026-11-10,202,21.6,steady,"2026-11-10: AQI 202, Severe
-            2026-11-11: AQI 196, Severe
-            2026-11-12: AQI 196, Severe
-            2026-11-13: AQI 182, Moderate
-            2026-11-14: AQI 192, Severe
-            2026-11-15: AQI 189, Moderate
-            2026-11-16: AQI 194, Severe",Wear an N95 mask outdoors. Avoid outdoor exercise. Keep windows closed.,Education department: cancel outdoor school activities and sports. ; Environment department: increase patrols against crop-residue burning. ; City administration: water sprinkling on main roads to settle dust. ; Hospitals: prepare for more respiratory patients.
-Multan,Severe,2026-11-10,183,21.39,steady,"2026-11-10: AQI 183, Severe
-            2026-11-11: AQI 179, Severe
-            2026-11-12: AQI 178, Severe
-            2026-11-13: AQI 172, Severe
-            2026-11-14: AQI 169, Moderate
-            2026-11-15: AQI 178, Severe
-            2026-11-16: AQI 178, Severe",Wear an N95 mask outdoors. Avoid outdoor exercise. Keep windows closed.,Education department: cancel outdoor school activities and sports. ; Environment department: increase patrols against crop-residue burning. ; City administration: water sprinkling on main roads to settle dust. ; Hospitals: prepare for more respiratory patients.
-Peshawar,Moderate,2026-11-10,151,21.97,falling,"2026-11-10: AQI 151, Moderate
-            2026-11-11: AQI 147, Moderate
-            2026-11-12: AQI 136, Moderate
-            2026-11-13: AQI 135, Moderate
-            2026-11-14: AQI 136, Low
-            2026-11-15: AQI 128, Low
-            2026-11-16: AQI 128, Low","Children, elderly and heart/lung patients should limit time outdoors.",Health department: issue advisory for sensitive groups. ; Environment department: monitor crop-burning hotspots.
-Islamabad,Moderate,2026-11-10,150,19.47,falling,"2026-11-10: AQI 150, Moderate
+city,alert_level,worst_day,max_aqi,min_visibility_km,trend,daily_outlook,public_advice,authority_actions,warnings
+Faisalabad,Severe,2026-11-10,287,4.45,falling,"2026-11-10: AQI 287, Severe
+            2026-11-11: AQI 283, Moderate
+            2026-11-12: AQI 235, Moderate
+            2026-11-13: AQI 236, Moderate
+            2026-11-14: AQI 236, Moderate
+            2026-11-15: AQI 210, Moderate
+            2026-11-16: AQI 175, Moderate",Wear an N95 mask outdoors. Avoid outdoor exercise. Keep windows closed.,"Education department: cancel outdoor school activities and sports. ; Environment department: increase patrols against crop-residue burning. ; City administration: water sprinkling on main roads to settle dust. ; Hospitals: prepare for more respiratory patients. ; City administration: stop open construction, cover sand and soil, sprinkle water on roads.","Pollutant warning: Coarse dust high (construction, roads): 168 (limit 150)"
+Lahore,Moderate,2026-11-10,212,5.54,falling,"2026-11-10: AQI 212, Moderate
+            2026-11-11: AQI 198, Moderate
+            2026-11-12: AQI 203, Moderate
+            2026-11-13: AQI 190, Moderate
+            2026-11-14: AQI 200, Moderate
+            2026-11-15: AQI 190, Moderate
+            2026-11-16: AQI 190, Moderate","Children, elderly and heart/lung patients should limit time outdoors.",Health department: issue advisory for sensitive groups. ; Environment department: monitor crop-burning hotspots.,
+Multan,Moderate,2026-11-10,191,5.42,steady,"2026-11-10: AQI 189, Moderate
+            2026-11-11: AQI 191, Moderate
+            2026-11-12: AQI 177, Moderate
+            2026-11-13: AQI 172, Moderate
+            2026-11-14: AQI 170, Moderate
+            2026-11-15: AQI 179, Moderate
+            2026-11-16: AQI 188, Moderate","Children, elderly and heart/lung patients should limit time outdoors.",Health department: issue advisory for sensitive groups. ; Environment department: monitor crop-burning hotspots.,
+Peshawar,Moderate,2026-11-11,153,7.61,falling,"2026-11-10: AQI 153, Low
             2026-11-11: AQI 146, Moderate
-            2026-11-12: AQI 126, Low
-            2026-11-13: AQI 128, Low
-            2026-11-14: AQI 132, Low
-            2026-11-15: AQI 130, Low
-            2026-11-16: AQI 130, Low","Children, elderly and heart/lung patients should limit time outdoors.",Health department: issue advisory for sensitive groups. ; Environment department: monitor crop-burning hotspots.
-Karachi,Low,2026-11-10,99,22.61,steady,"2026-11-10: AQI 94, Low
-            2026-11-11: AQI 90, Low
-            2026-11-12: AQI 93, Low
+            2026-11-12: AQI 140, Low
+            2026-11-13: AQI 140, Low
+            2026-11-14: AQI 135, Low
+            2026-11-15: AQI 126, Low
+            2026-11-16: AQI 123, Low","Children, elderly and heart/lung patients should limit time outdoors.",Health department: issue advisory for sensitive groups. ; Environment department: monitor crop-burning hotspots.,
+Islamabad,Low,2026-11-10,155,9.98,falling,"2026-11-10: AQI 155, Low
+            2026-11-11: AQI 148, Low
+            2026-11-12: AQI 134, Low
+            2026-11-13: AQI 126, Low
+            2026-11-14: AQI 131, Low
+            2026-11-15: AQI 134, Low
+            2026-11-16: AQI 132, Low",Air is acceptable. No special precautions.,No action needed.,
+Karachi,Low,2026-11-10,98,12.78,steady,"2026-11-10: AQI 93, Low
+            2026-11-11: AQI 95, Low
+            2026-11-12: AQI 89, Low
             2026-11-13: AQI 94, Low
-            2026-11-14: AQI 97, Low
-            2026-11-15: AQI 95, Low
-            2026-11-16: AQI 99, Low",Air is acceptable. No special precautions.,No action needed.
+            2026-11-14: AQI 96, Low
+            2026-11-15: AQI 96, Low
+            2026-11-16: AQI 98, Low",Air is acceptable. No special precautions.,No action needed.,
