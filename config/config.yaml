@@ -4,7 +4,7 @@
 # =============================================================================
 
 project:
-  name: "Pakistan Air Quality and Smog Forecasting Pipeline"
+  name: "Pakistan Smog Early-Warning Pipeline (PySpark)"
 
 # ---------------------------------------------------------------------------
 # Where files are read from and saved to (relative to the main project folder)
@@ -17,6 +17,7 @@ paths:
   figures_dir: "reports/figures"                       # PNG charts
   results_dir: "reports/results"                       # CSV results
   report_file: "reports/summary_report.md"             # final written summary
+  alerts_dir: "reports/alerts"                         # smog early-warning bulletins
   logs_dir: "logs"                                     # one log file per run
 
 # ---------------------------------------------------------------------------
@@ -92,3 +93,15 @@ training:
     logreg_reg_param: [0.0, 0.01]
     rfc_num_trees: [60]
     rfc_max_depth: [6, 10]
+
+# ---------------------------------------------------------------------------
+# Automation (used by: python run_pipeline.py --daily  /  run_daily.bat)
+# ---------------------------------------------------------------------------
+automation:
+  retrain_every_days: 7    # retrain the models once a week (or earlier if monitoring asks)
+
+monitoring:
+  max_mae_aqi: 40          # if next-day AQI error grows above this, retrain automatically
+
+alerts:
+  low_visibility_km: 1.0   # below this visibility, a motorway warning is added

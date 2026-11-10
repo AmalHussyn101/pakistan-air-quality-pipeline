@@ -1,10 +1,10 @@
 target,horizon_days,model,best_params,accuracy,f1,weightedPrecision,weightedRecall
 smog_level,1,Baseline (same as today),-,0.798,0.798,0.798,0.798
 smog_level,1,Logistic Regression,regParam=0.0,0.815,0.815,0.818,0.815
-smog_level,1,Random Forest Classifier,"numTrees=60, maxDepth=10",0.811,0.811,0.812,0.811
+smog_level,1,Random Forest Classifier,"numTrees=60, maxDepth=6",0.813,0.813,0.815,0.813
 smog_level,2,Baseline (same as today),-,0.765,0.764,0.764,0.765
 smog_level,2,Logistic Regression,regParam=0.0,0.782,0.78,0.78,0.782
-smog_level,2,Random Forest Classifier,"numTrees=60, maxDepth=10",0.776,0.774,0.773,0.776
+smog_level,2,Random Forest Classifier,"numTrees=60, maxDepth=6",0.784,0.782,0.782,0.784
 smog_level,3,Baseline (same as today),-,0.745,0.744,0.744,0.745
 smog_level,3,Logistic Regression,regParam=0.0,0.771,0.769,0.767,0.771
-smog_level,3,Random Forest Classifier,"numTrees=60, maxDepth=10",0.772,0.768,0.769,0.772
+smog_level,3,Random Forest Classifier,"numTrees=60, maxDepth=6",0.769,0.765,0.768,0.769

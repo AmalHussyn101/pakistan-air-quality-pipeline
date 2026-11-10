@@ -1,116 +1,108 @@
-# Pakistan Air Quality & Smog Forecasting Pipeline (PySpark)
+# Pakistan Smog Early-Warning Pipeline (PySpark)
 
-An end-to-end, **automated** PySpark machine learning pipeline that forecasts a city's **AQI**, **visibility (km)** and **smog level** (Low / Moderate / Severe / Hazardous) for the **next 1, 2 and 3 days** in six Pakistani cities.
+An **automated, end-to-end PySpark machine learning pipeline** that runs every day on its own and forecasts each city's **Air Quality Index (AQI)**, **visibility (km)** and **smog level** (Low / Moderate / Severe / Hazardous) for the **next 3 days**. It then turns the forecast into a **Smog Early-Warning Bulletin** that says what the public and each authority should do.
 
 ## The problem
 
-Every winter, smog in Punjab and KPK reaches hazardous levels. In November 2025, for example, Lahore's citywide AQI reached about 475. Schools, hospitals, traffic police and families need to know **before** a bad day arrives, so they can close schools, warn patients, plan traffic and stop crop burning.
+Every winter (October to February), smog in Punjab and KPK reaches hazardous levels. For example, Lahore's citywide AQI reached about 475 in November 2025. Decisions are usually made **after** the air is already toxic, for things like:
+- closing schools,
+- stopping brick kilns,
+- enforcing the crop-burning ban, and
+- warning motorway drivers.
 
-This project builds a pipeline that:
-1. cleans messy sensor data,
-2. learns how weather, crop burning, traffic and industry drive pollution,
-3. forecasts the next 3 days for every city, and
-4. turns the forecast into simple health advice.
+**This pipeline gives a 3-day early warning, automatically.** Every morning it:
+1. ingests the newest environmental data,
+2. cleans it,
+3. learns from it,
+4. forecasts the next 3 days,
+5. checks its own accuracy, and
+6. publishes an action bulletin.
 
-## Data
+No one has to press a button.
 
-Synthetic daily data is generated in code (`src/generate_data.py`) for **Lahore, Faisalabad, Multan, Peshawar, Islamabad and Karachi**, from **1 Jan 2023 to 8 Nov 2026** (8,478 rows, 19 columns).
-
-The data is calibrated to real public facts:
-- IQAir annual PM2.5 averages for 2023–2025
-- the smog season (late October to February)
-- rice and wheat stubble burning
-- monsoon washout in July and August
-- Karachi's sea breeze
-
-AQI uses the official US-EPA formula, and visibility uses the Koschmieder formula. Missing values, sensor errors, misspelled city names and duplicates are added on purpose, so the cleaning step has real problems to solve. Every column is explained in `data/DATA_DICTIONARY.md`.
-
-> The data is synthetic. It is meant for learning and for demonstrating the pipeline, not for real health decisions.
-
-## Pipeline
+## How it works
 
 ```
-generate -> clean -> features -> train -> forecast -> evaluate
+ new data -> clean -> features -> train* -> forecast -> monitor -> alerts -> report
+                                  (*only when needed)
 ```
 
 | Step | File | What it does | Technology |
 |---|---|---|---|
-| 1. Generate | `src/generate_data.py` | Creates the synthetic CSV (skipped if it already exists) | NumPy, pandas |
-| 2. Clean | `src/clean.py` | Fixes city names, removes duplicates, turns impossible values into missing, fills gaps from neighbouring days, makes insight tables | **PySpark DataFrame API, Window functions** |
-| 3. Features | `src/features.py` | Season, crop-burning season, smog season, yesterday's pollution (lags), 3- and 7-day averages, AQI change, plus targets for +1/+2/+3 days | **PySpark Window functions** |
-| 4. Train | `src/train.py` | **Model 1 (regression):** AQI and visibility with Linear Regression, Random Forest and Gradient-Boosted Trees. **Model 2 (classification):** smog level with Logistic Regression and Random Forest. Uses a time-based split, k-fold cross-validation, hyperparameter tuning and a "same as today" baseline. The best model is saved. | **PySpark MLlib** (Pipeline, CrossValidator) |
-| 5. Forecast | `src/forecast.py` | Loads the saved best models and forecasts the next 3 days for each city, with health advice | **PySpark MLlib** |
-| 6. Evaluate | `src/evaluate.py` | Makes PNG charts and a written summary report | Matplotlib |
+| 1. Generate / ingest | `src/generate_data.py` | Daily environmental data for 6 cities: weather, PM2.5, PM10, CO₂, NO₂, SO₂, CO, ozone, traffic, industry, crop burning | NumPy, pandas |
+| 2. Clean | `src/clean.py` | Fixes city names, removes duplicates, turns impossible sensor values into missing, fills gaps from neighbouring days, writes a data-quality report | **PySpark DataFrame API, Window functions** |
+| 3. Features | `src/features.py` | Season, crop-burning season, smog season, yesterday's pollution (lags), 3- and 7-day averages, plus targets for +1/+2/+3 days | **PySpark Window functions** |
+| 4. Train | `src/train.py` | **Model 1:** AQI and visibility (Linear Regression, Random Forest, Gradient-Boosted Trees). **Model 2:** smog level (Logistic Regression, Random Forest). Uses a time-based split, 3-fold cross-validation, hyperparameter tuning and a baseline comparison. The best model is saved. | **PySpark MLlib** |
+| 5. Forecast | `src/forecast.py` | The best saved models forecast the next 3 days for each city | **PySpark MLlib** |
+| 6. Monitor | `src/monitor.py` | Stores every forecast and compares it with the real data when that day arrives. If the error grows too large, it triggers automatic retraining. | pandas |
+| 7. Alerts | `src/alerts.py` | Writes the **Smog Early-Warning Bulletin**: alert level, trend, public advice, and actions for the education, industries, environment, traffic, motorway and health departments | pandas |
+| 8. Report | `src/evaluate.py` | Result tables, evaluation figures and a written summary report | Matplotlib |
 
-Everything is controlled by **`config/config.yaml`**, and every run writes a log file in **`logs/`**.
+**Automation features**
+- **Scheduled:** `run_daily.bat` runs the pipeline every morning through Windows Task Scheduler.
+- **Smart retraining:** models are retrained only when there are no models yet, when they are older than 7 days, or when monitoring finds that accuracy dropped. Otherwise the daily run reuses the saved models and takes only a few minutes.
+- **Self-monitoring:** every forecast is checked against reality later (`forecast_monitoring.csv`).
+- **Config-driven:** every setting is in `config/config.yaml` (paths, Spark memory, cleaning rules, horizons, CV grid, retraining and alert thresholds).
+- **Logged:** every run writes `logs/pipeline_<date_time>.log`, recording each step, its duration, all alerts and any error.
 
 ## How to run
 
 ```bash
-# 1. activate the virtual environment (Windows)
 venv\Scripts\activate
 
-# 2. fast test run (no cross-validation, ~3-5 minutes)
-python run_pipeline.py --quick
-
-# 3. full run (with 3-fold cross-validation and tuning, ~15-30 minutes)
-python run_pipeline.py
-
-# run only some steps
-python run_pipeline.py --steps clean,features
+python run_pipeline.py --daily     # the scheduled daily run (ingest, smart retrain, forecast, monitor, alert)
+python run_pipeline.py             # full rebuild: all steps, models retrained with cross-validation (~30 min)
+python run_pipeline.py --quick     # full rebuild without cross-validation (~5-10 min)
+python run_pipeline.py --steps forecast,alerts    # only some steps
 ```
 
-Requirements: Python 3.10+, Java 17, and `pip install -r requirements.txt`. On Windows you also need Hadoop `winutils.exe` and `hadoop.dll` in `C:\hadoop\bin`, with `HADOOP_HOME=C:\hadoop` set.
+**Schedule it to run every day at 7:00 AM (Windows, run once in Command Prompt):**
+```bash
+schtasks /create /sc daily /st 07:00 /tn "SmogEarlyWarning" /tr "C:\projects\pakistan-air-quality-pipeline\run_daily.bat"
+```
+
+Requirements: Python 3.10+, Java 17, `pip install -r requirements.txt` (including `setuptools` for Python 3.12). On Windows you also need Hadoop `winutils.exe` and `hadoop.dll` in `C:\hadoop\bin`, with `HADOOP_HOME=C:\hadoop` set.
 
 ## Outputs
 
-| Folder / file | Contents |
+| Location | Contents |
 |---|---|
-| `data/processed/` | Clean data and the feature table (Parquet, written by Spark) |
+| `reports/alerts/smog_bulletin_<date>.txt` | **Early-warning bulletin**: per-city alert, 3-day outlook, public advice, authority actions |
+| `reports/alerts/smog_alerts_<date>.csv` | The same alerts in machine-readable form (can feed SMS or email systems) |
+| `reports/results/latest_forecast.csv` | 3-day AQI, visibility and smog-level forecast for every city |
+| `reports/results/forecast_history.csv`, `forecast_monitoring.csv` | Every forecast made, and how accurate it turned out |
+| `reports/results/*.csv` | Data quality, city summary, correlations, model metrics, best models, feature importance |
+| `reports/summary_report.md` | Automatically written summary of all results, including the latest bulletin |
 | `models/` | Best saved Spark model for every target and horizon |
-| `reports/results/` | CSVs: data quality, city summary, monthly summary, correlations, regression and classification metrics, best models, test predictions, feature importance, **latest 3-day forecast** |
-| `reports/figures/` | PNG charts: monthly AQI heatmap, model comparison, smog accuracy, actual vs predicted, feature importance, confusion matrix |
-| `reports/summary_report.md` | Automatically written summary of all results |
-| `logs/` | One log file per run (what happened in each step, how long it took, any errors) |
+| `logs/` | One log file per run |
+
+## Data
+
+Synthetic daily data for **Lahore, Faisalabad, Multan, Peshawar, Islamabad and Karachi**, from **1 Jan 2023 to yesterday**. It is calibrated to real public facts:
+- IQAir annual PM2.5 averages for 2023–2025
+- the smog season
+- rice and wheat stubble burning
+- monsoon washout
+- Karachi's sea breeze
+
+AQI uses the official US-EPA formula, and visibility uses the Koschmieder formula. Dirty records (missing values, sensor errors, misspelled names, duplicates) are added on purpose, so the cleaning step has real problems to solve. Every column is explained in `data/DATA_DICTIONARY.md`.
+
+> The data is synthetic. It is meant for learning and demonstration, not for real health decisions.
 
 ## Evaluation
 
 - **Regression:** RMSE, MAE and R² on the test period (1 Oct 2025 onwards, which includes two smog seasons)
 - **Classification:** accuracy, weighted F1, precision and recall, plus a confusion matrix
-- Every model is compared with a **baseline** that predicts tomorrow will be the same as today. A model is only useful if it beats this baseline.
-
-## Project structure
-
-```
-pakistan-air-quality-pipeline/
-├── config/config.yaml        # all settings
-├── data/
-│   ├── raw/                  # synthetic CSV
-│   ├── processed/            # Spark Parquet outputs
-│   └── DATA_DICTIONARY.md    # every column explained
-├── src/
-│   ├── generate_data.py      # step 1
-│   ├── clean.py              # step 2
-│   ├── features.py           # step 3
-│   ├── train.py              # step 4
-│   ├── forecast.py           # step 5
-│   ├── evaluate.py           # step 6
-│   └── utils.py              # config, logging, Spark session
-├── models/                   # saved best models
-├── reports/                  # figures, results, summary report
-├── logs/                     # run logs
-├── notebooks/                # data exploration
-├── run_pipeline.py           # runs everything automatically
-└── requirements.txt
-```
+- Every model is compared with a **baseline** that predicts tomorrow will be the same as today.
 
 ## Objectives
 
-1. Build a scalable data cleaning and feature engineering pipeline using PySpark.
-2. Identify the factors that most strongly influence air quality (correlations and feature importance).
-3. Compare multiple regression models and select the best performer, with cross-validation and hyperparameter tuning.
-4. Package the work as a reproducible, well-documented GitHub project.
+1. Build a scalable, automated data cleaning and feature engineering pipeline using PySpark.
+2. Identify the factors that most strongly influence air quality.
+3. Compare multiple regression models and select the best performer, using cross-validation and hyperparameter tuning.
+4. Turn forecasts into early warnings and actions: the problem-solving output.
+5. Package the work as a reproducible, well-documented GitHub project.
 
 ## Tech stack
 
-Python, PySpark (DataFrame API and MLlib), pandas, NumPy, Matplotlib, Jupyter, YAML, Git/GitHub
+Python, PySpark (DataFrame API and MLlib), pandas, NumPy, Matplotlib, YAML, Windows Task Scheduler, Git/GitHub

@@ -216,7 +216,12 @@ def write_report(cfg, logger, reg, cls, best, imp, quality, city, corr, forecast
                       "predicted_smog_level", "health_advice"]]
         lines += ["## 5. Latest forecast (next 3 days)", "", md_table(f), ""]
 
-    lines += ["## 6. Charts", ""]
+    bulletins = sorted(Path(cfg["paths"].get("alerts_dir", "reports/alerts")).glob("smog_bulletin_*.txt"))
+    if bulletins:
+        lines += ["## 6. Smog early-warning bulletin (latest)", "", "```",
+                  bulletins[-1].read_text(encoding="utf-8"), "```", ""]
+
+    lines += ["## 7. Charts", ""]
     for name in ["monthly_aqi_heatmap.png", "model_comparison_rmse.png", "smog_accuracy_by_horizon.png",
                  "actual_vs_predicted_aqi.png", "feature_importance_aqi.png", "smog_confusion_matrix.png"]:
         lines += [f"![{name}](figures/{name})", ""]
