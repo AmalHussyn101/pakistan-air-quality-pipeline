@@ -1,18 +1,29 @@
 check,count
-Raw rows,8484
-Badly written city names fixed,20
-Duplicate rows removed,30
-Impossible values in humidity_pct,10
-Impossible values in pm25,15
-Missing values filled in temperature_c,169
-Missing values filled in humidity_pct,179
-Missing values filled in wind_speed_kmh,169
+Rows loaded,8502
+Duplicate rows removed,0
+Impossible values in temperature_c,0
+Impossible values in humidity_pct,0
+Impossible values in wind_speed_kmh,0
+Impossible values in rainfall_mm,0
+Impossible values in pm25,0
+Impossible values in pm10,0
+Impossible values in no2_ugm3,0
+Impossible values in so2_ugm3,0
+Impossible values in co_ugm3,0
+Impossible values in ozone_ugm3,0
+Impossible values in co2_ppm,0
+Impossible values in dust_ugm3,0
+Missing values filled in pm25,0
+Missing values filled in pm10,0
+Missing values filled in no2_ugm3,0
+Missing values filled in so2_ugm3,0
+Missing values filled in co_ugm3,0
+Missing values filled in ozone_ugm3,0
+Missing values filled in co2_ppm,3984
+Missing values filled in dust_ugm3,0
+Missing values filled in temperature_c,0
+Missing values filled in humidity_pct,0
+Missing values filled in wind_speed_kmh,0
 Missing values filled in rainfall_mm,0
-Missing values filled in pm25,184
-Missing values filled in pm10,169
-Missing values filled in co2_ppm,0
-Missing values filled in no2_ppb,169
-Missing values filled in so2_ppb,169
-Missing values filled in co_ppm,169
-Missing values filled in ozone_ppb,169
-Clean rows,8454
+Clean past city-days,8454
+Forecast-weather city-days,48

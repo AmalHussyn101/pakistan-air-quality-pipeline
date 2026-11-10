@@ -109,7 +109,7 @@ def chart_actual_vs_predicted(preds, cfg, logger):
         ax.set_ylabel(city, rotation=0, ha="right", va="center", color=TEXT)
         ax.set_ylim(0, 520)
         ax.grid(axis="x", visible=False)
-    axes[0].set_title(f"Actual vs predicted AQI in the test period - best model: {p['model'].iloc[0]}",
+    axes[0].set_title(f"Actual vs predicted next-day AQI (test period) - best model: {p['model'].iloc[0]}",
                       loc="left", pad=22)
     axes[0].legend(loc="lower left", bbox_to_anchor=(0, 1.0), fontsize=8, ncol=2)
     return _save(fig, cfg, "actual_vs_predicted_aqi.png", logger)
@@ -159,7 +159,7 @@ def chart_monthly_heatmap(monthly, cfg, logger):
     months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
     ax.set_xticks(range(m.shape[1]), [months[int(c) - 1] for c in m.columns])
     ax.set_yticks(range(m.shape[0]), m.index)
-    ax.set_title("Average AQI by city and month (2023-2026): smog peaks in November")
+    ax.set_title("Average AQI by city and month (real data, 2023-2026)")
     return _save(fig, cfg, "monthly_aqi_heatmap.png", logger)
 
 
@@ -179,8 +179,8 @@ def write_report(cfg, logger, reg, cls, best, imp, quality, city, corr, forecast
     test_start = cfg["split"]["test_start_date"]
     lines = [f"# {cfg['project']['name']}", "",
              f"_Report generated automatically by `run_pipeline.py` on {datetime.now():%Y-%m-%d %H:%M}._", "",
-             "> The data is synthetic, calibrated to IQAir annual PM2.5 averages (2023-2025) and known "
-             "seasonal smog, crop-burning and monsoon patterns in Pakistan.", "",
+             "> Data: real hourly air-quality (CAMS, via Open-Meteo) and weather data for six Pakistani "
+             "cities since 2023, aggregated to daily values. AQI is calculated with the US-EPA formula.", "",
              "## 1. Data quality (cleaning step)", "", md_table(quality), "",
              "## 2. City overview", "", md_table(city), ""]
 
@@ -214,7 +214,7 @@ def write_report(cfg, logger, reg, cls, best, imp, quality, city, corr, forecast
     if forecast is not None:
         f = forecast[["city", "forecast_date", "days_ahead", "predicted_aqi", "predicted_visibility_km",
                       "predicted_smog_level", "health_advice"]]
-        lines += ["## 5. Latest forecast (next 3 days)", "", md_table(f), ""]
+        lines += ["## 5. Latest forecast (next 7 days)", "", md_table(f), ""]
 
     bulletins = sorted(Path(cfg["paths"].get("alerts_dir", "reports/alerts")).glob("smog_bulletin_*.txt"))
     if bulletins:

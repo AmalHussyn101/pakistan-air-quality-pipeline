@@ -7,17 +7,17 @@ run_pipeline.py - the AUTOMATED Smog Early-Warning pipeline.
     python run_pipeline.py --steps forecast,alerts   # run only some steps
 
 Steps (in order):
-    1. generate  - new data arrives (synthetic sensor data up to the given end date)
+    1. ingest    - downloads REAL air-quality and weather data (Open-Meteo), plus the 7-day weather forecast
     2. clean     - PySpark: fix names, duplicates, impossible and missing values
     3. features  - PySpark: season, yesterday's pollution, 7-day averages, future targets
     4. train     - PySpark MLlib: AQI/visibility regression + smog classification, tuned with CV
-    5. forecast  - PySpark: next 3 days for every city with the best saved models
+    5. forecast  - PySpark: next 7 days for every city with the best saved models (printed as a table)
     6. monitor   - compares past forecasts with what really happened; asks for retraining if needed
     7. alerts    - writes the Smog Early-Warning Bulletin with actions for each city
     8. evaluate  - result charts + written summary report
 
 --daily mode (the automation):
-    * data end date = yesterday, so the newest day is ingested automatically
+    * the newest real data (up to yesterday) and a fresh weather forecast are downloaded
     * the 'train' step runs ONLY when needed: no models yet, models older than
       'retrain_every_days', or the monitor step found that forecasts got worse
     * otherwise the saved models are reused, so the daily run takes only a few minutes
@@ -30,7 +30,7 @@ import argparse
 import os
 import sys
 import time
-from datetime import date, datetime, timedelta
+from datetime import datetime
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent
@@ -39,29 +39,20 @@ sys.path.insert(0, str(ROOT))
 
 from src import utils  # noqa: E402
 
-ALL_STEPS = ["generate", "clean", "features", "train", "forecast", "monitor", "alerts", "evaluate"]
+ALL_STEPS = ["ingest", "clean", "features", "train", "forecast", "monitor", "alerts", "evaluate"]
 SPARK_STEPS = {"clean", "features", "train", "forecast"}
-
-
-def step_generate(cfg, logger):
-    raw = Path(cfg["paths"]["raw_data"])
-    if raw.exists() and not cfg["data"]["regenerate"]:
-        logger.info("Raw data already exists (%s) - skipping generation", raw)
-        return
-    from src import generate_data
-    generate_data.OUTPUT_PATH = raw
-    generate_data.START_DATE = cfg["data"]["start_date"]
-    generate_data.END_DATE = cfg["data"]["end_date"]
-    generate_data.main()
-    logger.info("New data ingested up to %s -> %s", cfg["data"]["end_date"], raw)
 
 
 def retrain_reason(cfg):
     """Return why the models must be retrained, or None if the saved models are still fine."""
     models = Path(cfg["paths"]["models_dir"])
     best = Path(cfg["paths"]["results_dir"]) / "best_models.csv"
-    if not best.exists() or not any(models.glob("*_h1")):
+    if not best.exists():
         return "no trained models found"
+    names = cfg["targets"]["regression"] + [cfg["targets"]["classification"]]
+    missing = [f"{t}_h{h}" for t in names for h in cfg["targets"]["horizons"] if not (models / f"{t}_h{h}").exists()]
+    if missing:
+        return f"models missing for {len(missing)} forecasts (e.g. {missing[0]})"
     if (models / "RETRAIN_NEEDED").exists():
         return "monitoring found that forecast errors increased"
     age = (datetime.now() - datetime.fromtimestamp(best.stat().st_mtime)).days
@@ -92,8 +83,6 @@ def main():
         sys.exit(1)
 
     if args.daily:
-        cfg["data"]["end_date"] = str(date.today() - timedelta(days=1))
-        cfg["data"]["regenerate"] = True
         reason = retrain_reason(cfg)
         if reason:
             logger.info("Retraining models because: %s", reason)
@@ -117,8 +106,9 @@ def main():
                 logger.info("Spark %s started (%s, driver memory %s)",
                             spark.version, cfg["spark"]["master"], cfg["spark"]["driver_memory"])
 
-            if step == "generate":
-                step_generate(cfg, logger)
+            if step == "ingest":
+                from src import ingest
+                ingest.run(cfg, logger)
             elif step == "clean":
                 from src import clean
                 clean.run(spark, cfg, logger)

@@ -1,101 +1,99 @@
 target,feature,importance
-aqi,pm25,0.33216
-aqi,aqi,0.1789
-aqi,aqi_avg3,0.11327
-aqi,co_ppm,0.0953
-aqi,pm10,0.05718
-aqi,aqi_avg7,0.05439
-aqi,pm25_lag1,0.03226
-aqi,pm25_avg7,0.02811
-aqi,aqi_max7,0.02461
-aqi,visibility_km,0.01238
-aqi,aqi_lag2,0.01007
-aqi,doy_sin,0.00558
-aqi,crop_burning_avg7,0.0054
-aqi,pm25_lag2,0.0053
-aqi,humidity_pct,0.0039
-aqi,crop_burning_index,0.00378
-aqi,humidity_avg3,0.00357
-aqi,wind_avg3,0.0026
-aqi,doy_cos,0.00239
-aqi,aqi_lag1,0.00226
-aqi,so2_ppb,0.00225
-aqi,day_of_week,0.00204
-aqi,industrial_activity,0.00174
-aqi,ozone_ppb,0.0017
-aqi,rainfall_sum3,0.00169
-aqi,visibility_km_lag1,0.00167
-aqi,wind_speed_kmh,0.00164
-aqi,co2_ppm,0.00163
-aqi,temperature_c,0.00161
-aqi,aqi_change_1d,0.00159
-aqi,rainfall_mm,0.00144
-aqi,traffic_level,0.00141
-aqi,no2_ppb,0.00133
-aqi,month,0.00108
-aqi,city = Peshawar,0.00065
-aqi,is_crop_burning_season,0.00064
-aqi,season = Autumn,0.00061
-aqi,is_smog_season,0.0005
-aqi,season = Winter,0.00027
-aqi,is_weekend,0.00023
-aqi,season = Monsoon,0.00023
-aqi,city = Multan,0.00021
-aqi,city = Faisalabad,0.00019
-aqi,city = Lahore,9e-05
-aqi,city = Karachi,7e-05
-aqi,city = Islamabad,4e-05
-aqi,season = Summer,1e-05
+aqi,pm25_avg7,0.31313
+aqi,aqi_avg7,0.12662
+aqi,pm25,0.0979
+aqi,aqi_max7,0.09713
+aqi,aqi_avg3,0.09332
+aqi,aqi,0.05483
+aqi,t_wind_speed_kmh,0.04602
+aqi,t_humidity_pct,0.02408
+aqi,t_doy_cos,0.02009
+aqi,t_temperature_c,0.01706
+aqi,pm25_lag1,0.01388
+aqi,co2_ppm,0.01021
+aqi,t_month,0.0092
+aqi,t_doy_sin,0.00916
+aqi,temperature_c,0.00909
+aqi,t_is_smog_season,0.00577
+aqi,city = Faisalabad,0.00483
+aqi,humidity_pct,0.00345
+aqi,t_rainfall_mm,0.00315
+aqi,ozone_ugm3,0.00311
+aqi,dust_ugm3,0.00291
+aqi,aqi_lag2,0.00287
+aqi,aqi_lag1,0.00284
+aqi,co_ugm3,0.00252
+aqi,pm25_lag2,0.00247
+aqi,so2_ugm3,0.00246
+aqi,wind_avg3,0.00244
+aqi,pm10,0.00232
+aqi,city = Lahore,0.00193
+aqi,no2_ugm3,0.00176
+aqi,city = Multan,0.00168
+aqi,horizon,0.00148
+aqi,rainfall_sum3,0.00147
+aqi,city = Islamabad,0.00134
+aqi,season = Autumn,0.00127
+aqi,aqi_change_1d,0.00105
+aqi,wind_speed_kmh,0.001
+aqi,city = Peshawar,0.00094
+aqi,rainfall_mm,0.00067
+aqi,city = Karachi,0.00061
+aqi,t_is_crop_burning_season,0.00051
+aqi,season = Spring,0.00045
+aqi,season = Summer,0.00025
+aqi,t_is_weekend,0.00023
+aqi,visibility_km,0.00022
+aqi,season = Winter,0.0002
+aqi,season = Monsoon,0.00012
 aqi,city = __unknown,0.0
-aqi,season = Spring,0.0
 aqi,season = __unknown,0.0
-visibility_km,visibility_km,0.33895
-visibility_km,pm25,0.18767
-visibility_km,aqi,0.15426
-visibility_km,aqi_max7,0.09346
-visibility_km,aqi_avg3,0.05456
-visibility_km,pm25_avg7,0.03041
-visibility_km,pm25_lag1,0.02251
-visibility_km,visibility_km_lag1,0.02233
-visibility_km,aqi_avg7,0.02216
-visibility_km,doy_cos,0.01195
-visibility_km,aqi_lag2,0.01151
-visibility_km,humidity_pct,0.00578
-visibility_km,temperature_c,0.00513
-visibility_km,pm10,0.00497
-visibility_km,co_ppm,0.00466
-visibility_km,humidity_avg3,0.00396
-visibility_km,is_smog_season,0.00392
-visibility_km,season = Winter,0.00217
-visibility_km,aqi_lag1,0.0021
-visibility_km,doy_sin,0.0017
-visibility_km,day_of_week,0.00156
-visibility_km,month,0.00135
-visibility_km,ozone_ppb,0.00133
-visibility_km,rainfall_mm,0.00123
-visibility_km,season = Summer,0.00123
-visibility_km,industrial_activity,0.00099
-visibility_km,aqi_change_1d,0.00092
-visibility_km,rainfall_sum3,0.0009
-visibility_km,so2_ppb,0.0008
-visibility_km,wind_speed_kmh,0.00066
-visibility_km,pm25_lag2,0.00063
-visibility_km,city = Islamabad,0.0006
-visibility_km,co2_ppm,0.00058
-visibility_km,wind_avg3,0.00056
-visibility_km,no2_ppb,0.00049
-visibility_km,traffic_level,0.00041
-visibility_km,crop_burning_index,0.00031
-visibility_km,city = Lahore,0.00023
-visibility_km,crop_burning_avg7,0.00019
-visibility_km,city = Karachi,0.00017
-visibility_km,season = Spring,0.00017
-visibility_km,city = Peshawar,0.00016
-visibility_km,is_crop_burning_season,0.00011
-visibility_km,season = Autumn,0.0001
-visibility_km,is_weekend,4e-05
-visibility_km,city = Multan,4e-05
-visibility_km,season = Monsoon,3e-05
-visibility_km,city = Faisalabad,1e-05
+visibility_km,t_rainfall_mm,0.31061
+visibility_km,t_humidity_pct,0.13198
+visibility_km,t_temperature_c,0.07291
+visibility_km,t_doy_cos,0.05753
+visibility_km,t_wind_speed_kmh,0.04428
+visibility_km,t_doy_sin,0.04319
+visibility_km,city = Islamabad,0.03631
+visibility_km,co2_ppm,0.03099
+visibility_km,visibility_km,0.02563
+visibility_km,aqi_max7,0.02291
+visibility_km,aqi_avg7,0.01967
+visibility_km,dust_ugm3,0.01811
+visibility_km,pm25_avg7,0.01743
+visibility_km,temperature_c,0.01478
+visibility_km,rainfall_sum3,0.01297
+visibility_km,t_month,0.01254
+visibility_km,humidity_pct,0.01131
+visibility_km,aqi_avg3,0.00885
+visibility_km,wind_avg3,0.00745
+visibility_km,pm10,0.00694
+visibility_km,co_ugm3,0.00687
+visibility_km,ozone_ugm3,0.00623
+visibility_km,so2_ugm3,0.00594
+visibility_km,pm25,0.00582
+visibility_km,season = Spring,0.00581
+visibility_km,rainfall_mm,0.00536
+visibility_km,horizon,0.00532
+visibility_km,no2_ugm3,0.00502
+visibility_km,aqi_lag2,0.00481
+visibility_km,aqi,0.00477
+visibility_km,pm25_lag1,0.00396
+visibility_km,t_is_smog_season,0.00362
+visibility_km,pm25_lag2,0.00336
+visibility_km,wind_speed_kmh,0.00335
+visibility_km,city = Peshawar,0.00318
+visibility_km,aqi_change_1d,0.00301
+visibility_km,city = Karachi,0.00274
+visibility_km,aqi_lag1,0.00261
+visibility_km,t_is_weekend,0.00204
+visibility_km,season = Monsoon,0.00201
+visibility_km,season = Summer,0.00179
+visibility_km,city = Multan,0.00178
+visibility_km,city = Lahore,0.00139
+visibility_km,city = Faisalabad,0.00134
+visibility_km,t_is_crop_burning_season,0.00102
+visibility_km,season = Winter,0.00029
+visibility_km,season = Autumn,0.00017
 visibility_km,city = __unknown,0.0
 visibility_km,season = __unknown,0.0

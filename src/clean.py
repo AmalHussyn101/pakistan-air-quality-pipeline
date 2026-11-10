@@ -1,20 +1,21 @@
 """
 clean.py - STEP 2 of the pipeline (PySpark).
 
-Reads the raw CSV and fixes every data problem:
-  1. City names written badly ("lahore " -> "Lahore")
-  2. Duplicate rows
-  3. Impossible sensor values (e.g. pm25 = -999, humidity = 150) -> treated as missing
-  4. Missing values -> filled with the average of the nearest earlier and later
-     valid reading of the SAME city (like a sensor repair person would do)
+Reads the live daily data and:
+  1. removes duplicate city-days
+  2. turns impossible values (negative pollution, humidity > 100 ...) into missing
+  3. fills missing values with the average of the nearest earlier and later valid day of the
+     same city (Spark Window functions); anything still missing gets the city's average
+  4. CALCULATES the targets in Spark:
+       * AQI with the official US-EPA formula (24-hour PM2.5 and PM10 breakpoints, 2024 update)
+       * visibility in km (weather-model visibility; if missing, estimated from PM2.5 and humidity
+         with the Koschmieder formula)
+       * smog level from AQI: Low (0-150), Moderate (151-200), Severe (201-300), Hazardous (301+)
+  5. saves a data-quality report and city insights (Spark group-by)
 
-It also saves a data-quality report and simple city insights (Spark group-by).
+Future days (weather forecast only) are kept, because the forecast step needs their weather.
 
-Output: data/processed/clean_data.parquet
-        reports/results/data_quality_report.csv
-        reports/results/city_summary.csv
-        reports/results/city_monthly_summary.csv
-        reports/results/correlation_with_aqi.csv
+Output: data/processed/clean_data.parquet and reports/results/*.csv
 """
 
 import pandas as pd
@@ -23,82 +24,107 @@ from pyspark.sql import functions as F
 
 from src.utils import save_csv, to_pandas
 
-SENSOR_COLUMNS = ["temperature_c", "humidity_pct", "wind_speed_kmh", "rainfall_mm",
-                  "pm25", "pm10", "co2_ppm", "no2_ppb", "so2_ppb", "co_ppm", "ozone_ppb"]
-OTHER_NUMERIC = ["traffic_level", "industrial_activity", "crop_burning_index", "aqi", "visibility_km"]
+POLLUTION = ["pm25", "pm10", "no2_ugm3", "so2_ugm3", "co_ugm3", "ozone_ugm3", "co2_ppm", "dust_ugm3"]
+WEATHER = ["temperature_c", "humidity_pct", "wind_speed_kmh", "rainfall_mm"]
+
+PM25_BP = [(0.0, 9.0, 0, 50), (9.1, 35.4, 51, 100), (35.5, 55.4, 101, 150),
+           (55.5, 125.4, 151, 200), (125.5, 225.4, 201, 300), (225.5, 325.4, 301, 500)]
+PM10_BP = [(0, 54, 0, 50), (55, 154, 51, 100), (155, 254, 101, 150),
+           (255, 354, 151, 200), (355, 424, 201, 300), (425, 604, 301, 500)]
+
+
+def epa_aqi(col, breakpoints, decimals):
+    """US-EPA formula as a Spark expression: AQI = (Ih-Il)/(Ch-Cl) * (C-Cl) + Il"""
+    c = F.round(F.col(col), decimals)
+    expr = None
+    for c_lo, c_hi, i_lo, i_hi in breakpoints:
+        value = (i_hi - i_lo) / (c_hi - c_lo) * (c - c_lo) + i_lo
+        cond = c <= c_hi
+        expr = F.when(cond, value) if expr is None else expr.when(cond, value)
+    return expr.otherwise(F.lit(500.0))
+
+
+def fill_gaps(df, columns):
+    w_prev = Window.partitionBy("city").orderBy("date").rowsBetween(Window.unboundedPreceding, -1)
+    w_next = Window.partitionBy("city").orderBy("date").rowsBetween(1, Window.unboundedFollowing)
+    w_city = Window.partitionBy("city")
+    out = []
+    for c in df.columns:
+        if c in columns:
+            prev_val = F.last(c, ignorenulls=True).over(w_prev)
+            next_val = F.first(c, ignorenulls=True).over(w_next)
+            city_mean = F.avg(c).over(w_city)
+            out.append(F.round(F.coalesce(F.col(c), (prev_val + next_val) / 2, prev_val, next_val, city_mean,
+                                          F.lit(0.0)), 3).alias(c))
+        else:
+            out.append(F.col(c))
+    return df.select(out)
 
 
 def run(spark, cfg, logger):
     paths = cfg["paths"]
-    quality = []                                    # rows of the data-quality report
+    quality = []
 
-    # ---------------- 1. Load ----------------
     raw = spark.read.csv(paths["raw_data"], header=True, inferSchema=True)
     n_raw = raw.count()
-    logger.info("Loaded raw data: %d rows, %d columns", n_raw, len(raw.columns))
-    quality.append(("Raw rows", n_raw))
+    logger.info("Loaded live data: %d rows, %d columns", n_raw, len(raw.columns))
+    quality.append(("Rows loaded", n_raw))
 
-    # ---------------- 2. Fix city names ----------------
-    fixed_city = F.initcap(F.trim(F.col("city")))
-    n_bad_names = raw.filter(F.col("city") != fixed_city).count()
-    df = raw.withColumn("city", fixed_city)
-    df = df.filter(F.col("city").isin(cfg["data"]["cities"]))
-    logger.info("Fixed %d badly written city names", n_bad_names)
-    quality.append(("Badly written city names fixed", n_bad_names))
+    df = (raw.withColumn("city", F.initcap(F.trim(F.col("city"))))
+             .withColumn("date", F.to_date(F.col("date")))
+             .dropDuplicates(["city", "date"]))
+    quality.append(("Duplicate rows removed", n_raw - df.count()))
 
-    # ---------------- 3. Dates + duplicates ----------------
-    df = df.withColumn("date", F.to_date(F.col("date")))
-    df = df.dropDuplicates(["city", "date"])
-    n_after_dupes = df.count()
-    logger.info("Removed %d duplicate rows", n_raw - n_after_dupes)
-    quality.append(("Duplicate rows removed", n_raw - n_after_dupes))
+    for c in POLLUTION + WEATHER + ["visibility_m"]:
+        df = df.withColumn(c, F.col(c).cast("double"))
 
-    # ---------------- 4. Impossible values -> missing ----------------
+    # Impossible values -> missing
     for col, (low, high) in cfg["cleaning"]["valid_ranges"].items():
         bad = (F.col(col) < low) | (F.col(col) > high)
         n_bad = df.filter(bad).count()
+        quality.append((f"Impossible values in {col}", n_bad))
         if n_bad:
             logger.info("Column %-15s: %d impossible values set to missing", col, n_bad)
-            quality.append((f"Impossible values in {col}", n_bad))
-        df = df.withColumn(col, F.when(bad, F.lit(None)).otherwise(F.col(col)).cast("double"))
+        df = df.withColumn(col, F.when(bad, F.lit(None)).otherwise(F.col(col)))
 
-    # ---------------- 5. Fill missing values ----------------
-    missing_before = df.select([F.sum(F.col(c).isNull().cast("int")).alias(c) for c in SENSOR_COLUMNS]).first()
-    for c in SENSOR_COLUMNS:
-        quality.append((f"Missing values filled in {c}", int(missing_before[c] or 0)))
-    logger.info("Missing values before filling: %d", sum(int(v or 0) for v in missing_before))
+    past = df.filter(F.col("is_future") == 0)
+    future = df.filter(F.col("is_future") == 1)
 
-    w_prev = Window.partitionBy("city").orderBy("date").rowsBetween(Window.unboundedPreceding, -1)
-    w_next = Window.partitionBy("city").orderBy("date").rowsBetween(1, Window.unboundedFollowing)
-    filled = []
-    for c in df.columns:
-        if c in SENSOR_COLUMNS:
-            prev_val = F.last(c, ignorenulls=True).over(w_prev)
-            next_val = F.first(c, ignorenulls=True).over(w_next)
-            filled.append(F.round(F.coalesce(F.col(c), (prev_val + next_val) / 2, prev_val, next_val), 2).alias(c))
-        else:
-            filled.append(F.col(c))
-    df = df.select(filled)
+    missing = past.select([F.sum(F.col(c).isNull().cast("int")).alias(c) for c in POLLUTION + WEATHER]).first()
+    for c in POLLUTION + WEATHER:
+        quality.append((f"Missing values filled in {c}", int(missing[c] or 0)))
+    logger.info("Missing values found in past data: %d (filled from neighbouring days)",
+                sum(int(v or 0) for v in missing))
 
-    missing_after = df.select([F.sum(F.col(c).isNull().cast("int")).alias(c) for c in SENSOR_COLUMNS]).first()
-    left = sum(int(v or 0) for v in missing_after)
-    logger.info("Missing values after filling: %d", left)
-    df = df.dropna(subset=SENSOR_COLUMNS + OTHER_NUMERIC)
+    past = fill_gaps(past, POLLUTION + WEATHER)
+    future = fill_gaps(future, WEATHER)
 
-    n_clean = df.count()
-    quality.append(("Clean rows", n_clean))
-    logger.info("Clean data: %d rows (%d cities)", n_clean, df.select("city").distinct().count())
+    # ---------------- targets, calculated with Spark ----------------
+    estimated_vis = F.lit(3.912) / (F.lit(0.02) + F.lit(0.004) * F.col("pm25") *
+                                    F.pow(1 - F.least(F.col("humidity_pct"), F.lit(97.0)) / 100, -0.55))
+    past = (past
+            .withColumn("aqi", F.round(F.greatest(epa_aqi("pm25", PM25_BP, 1), epa_aqi("pm10", PM10_BP, 0))))
+            .withColumn("visibility_km", F.round(F.least(F.greatest(
+                F.coalesce(F.col("visibility_m") / 1000, estimated_vis), F.lit(0.05)), F.lit(30.0)), 2))
+            .withColumn("smog_level", F.when(F.col("aqi") <= 150, "Low").when(F.col("aqi") <= 200, "Moderate")
+                        .when(F.col("aqi") <= 300, "Severe").otherwise("Hazardous")))
+    future = (future.withColumn("aqi", F.lit(None).cast("double"))
+                    .withColumn("visibility_km", F.lit(None).cast("double"))
+                    .withColumn("smog_level", F.lit(None).cast("string")))
+    df = past.unionByName(future).drop("visibility_m").orderBy("city", "date")
 
-    # ---------------- 6. Save ----------------
-    df = df.orderBy("city", "date")
     df.write.mode("overwrite").parquet(paths["clean_data"])
-    logger.info("Saved clean data -> %s", paths["clean_data"])
-    # Read the saved file back and keep it in memory, so the insight queries below are fast
     df = spark.read.parquet(paths["clean_data"]).cache()
+    past = df.filter(F.col("is_future") == 0)
+    n_past = past.count()
+    quality.append(("Clean past city-days", n_past))
+    quality.append(("Forecast-weather city-days", df.count() - n_past))
+    logger.info("Clean data: %d past city-days + %d future weather days -> %s",
+                n_past, df.count() - n_past, paths["clean_data"])
     save_csv(pd.DataFrame(quality, columns=["check", "count"]), cfg, "data_quality_report.csv", logger)
 
-    # ---------------- 7. Insights with Spark ----------------
-    city_summary = (df.groupBy("city")
+    # ---------------- insights with Spark ----------------
+    city_summary = (past.groupBy("city")
                     .agg(F.round(F.avg("aqi"), 1).alias("avg_aqi"),
                          F.round(F.avg("pm25"), 1).alias("avg_pm25"),
                          F.round(F.avg("visibility_km"), 2).alias("avg_visibility_km"),
@@ -108,17 +134,17 @@ def run(spark, cfg, logger):
                     .orderBy(F.desc("avg_aqi")))
     save_csv(to_pandas(city_summary), cfg, "city_summary.csv", logger)
 
-    monthly = (df.groupBy("city", F.month("date").alias("month"))
-               .agg(F.round(F.avg("aqi"), 1).alias("avg_aqi"),
-                    F.round(F.avg("pm25"), 1).alias("avg_pm25"),
+    monthly = (past.groupBy("city", F.month("date").alias("month"))
+               .agg(F.round(F.avg("aqi"), 1).alias("avg_aqi"), F.round(F.avg("pm25"), 1).alias("avg_pm25"),
                     F.round(F.avg("visibility_km"), 2).alias("avg_visibility_km"))
                .orderBy("city", "month"))
     save_csv(to_pandas(monthly), cfg, "city_monthly_summary.csv", logger)
 
-    numeric = SENSOR_COLUMNS + ["traffic_level", "industrial_activity", "crop_burning_index", "visibility_km"]
-    corr = [(c, round(df.stat.corr(c, "aqi"), 3)) for c in numeric]
+    corr = [(c, round(past.stat.corr(c, "aqi") or 0.0, 3)) for c in POLLUTION + WEATHER + ["visibility_km"]]
     corr_pdf = pd.DataFrame(corr, columns=["feature", "correlation_with_aqi"])
     corr_pdf = corr_pdf.reindex(corr_pdf["correlation_with_aqi"].abs().sort_values(ascending=False).index)
     save_csv(corr_pdf, cfg, "correlation_with_aqi.csv", logger)
 
+    save_csv(to_pandas(past.select(F.col("date").cast("string").alias("date"), "city", "aqi")),
+             cfg, "observed_aqi.csv", logger)
     return df

@@ -1,10 +1,4 @@
-target,horizon_days,type,best_model,rmse,model_path,accuracy,f1
-aqi,1,regression,Linear Regression,35.808,models\aqi_h1,,
-aqi,2,regression,Linear Regression,40.877,models\aqi_h2,,
-aqi,3,regression,Linear Regression,43.879,models\aqi_h3,,
-visibility_km,1,regression,Linear Regression,2.487,models\visibility_km_h1,,
-visibility_km,2,regression,Linear Regression,2.772,models\visibility_km_h2,,
-visibility_km,3,regression,Linear Regression,2.9,models\visibility_km_h3,,
-smog_level,1,classification,Logistic Regression,,models\smog_level_h1,0.815,0.815
-smog_level,2,classification,Random Forest Classifier,,models\smog_level_h2,0.784,0.782
-smog_level,3,classification,Logistic Regression,,models\smog_level_h3,0.771,0.769
+target,type,best_model,rmse,mae,r2,baseline_rmse,error_reduction_vs_baseline_pct,model_path,accuracy,f1,baseline_accuracy
+aqi,regression,Gradient-Boosted Trees,24.698,18.315,0.745,32.539,24.1,models\aqi,,,
+visibility_km,regression,Linear Regression,8.409,6.93,-0.785,2.842,-195.9,models\visibility_km,,,
+smog_level,classification,Logistic Regression,,,,,,models\smog_level,0.773,0.782,0.742

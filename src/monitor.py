@@ -13,11 +13,10 @@ from pathlib import Path
 import pandas as pd
 
 
-def actual_aqi(raw_path):
-    """Real AQI per city and day (light cleaning, enough for checking forecasts)."""
-    df = pd.read_csv(raw_path, usecols=["date", "city", "aqi"])
-    df["city"] = df["city"].astype(str).str.strip().str.title()
-    return df.drop_duplicates(["city", "date"]).rename(columns={"date": "forecast_date", "aqi": "actual_aqi"})
+def actual_aqi(results_dir):
+    """Real (observed) AQI per city and day, calculated by the clean step."""
+    df = pd.read_csv(Path(results_dir) / "observed_aqi.csv")
+    return df.rename(columns={"date": "forecast_date", "aqi": "actual_aqi"})
 
 
 def run(cfg, logger):
@@ -35,7 +34,7 @@ def run(cfg, logger):
     logger.info("Forecast history: %d forecasts stored", len(history))
 
     # 2. Compare old forecasts with what really happened
-    checked = history.merge(actual_aqi(cfg["paths"]["raw_data"]), on=["city", "forecast_date"], how="inner")
+    checked = history.merge(actual_aqi(cfg["paths"]["results_dir"]), on=["city", "forecast_date"], how="inner")
     if checked.empty:
         logger.info("No forecast can be checked yet (the forecast days are still in the future). "
                     "From the next daily run, accuracy will be tracked automatically.")

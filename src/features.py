@@ -1,19 +1,21 @@
 """
-features.py - STEP 3 of the pipeline (PySpark).
+features.py - STEP 3 of the pipeline (PySpark Window functions).
 
-Creates new columns ("features") that help the models, using Spark Window functions
-(each city is handled separately and in date order):
+For every city and every observed day t we build 7 training rows, one for each
+forecast horizon h = 1..7 days ahead. Each row contains:
 
-  Calendar  : month, day of week, weekend, season, crop-burning season, smog season
-  Yesterday : pm25_lag1, aqi_lag1, visibility_km_lag1 ... ("kal ka pollution")
-  Averages  : pm25_avg7, aqi_avg7 ("pichle 7 din ka average"), aqi_avg3, rain over 3 days ...
-  Change    : aqi_change_1d (how much AQI changed since yesterday)
+  TODAY (day t) - what we know now:
+     pollution: PM2.5, PM10, NO2, SO2, CO, ozone, CO2, dust, AQI, visibility
+     weather:   temperature, humidity, wind, rain
+     history:   yesterday's PM2.5/AQI (lags), 3- and 7-day averages, 7-day max, AQI change
+  TARGET DAY (day t+h) - what the weather forecast says about that day:
+     temperature, humidity, wind, rain, month, season, smog season, crop-burning season, weekend
+  horizon:  h (1..7)
+  TARGETS:  AQI, visibility and smog level on day t+h
 
-And the TARGETS (what we want to predict) for 1, 2 and 3 days ahead:
-  aqi_h1, aqi_h2, aqi_h3, visibility_km_h1 ..., smog_label_h1 ...
-
-Idea: at the end of day t we know everything about day t and the days before it.
-From that we predict day t+1, t+2 and t+3.
+Why the target-day weather? Smog depends mostly on weather: calm, cold, dry days trap pollution,
+wind and rain clean it. Real air-quality forecasts work the same way. In training we use the
+weather that actually happened on day t+h; when forecasting we use the weather forecast.
 
 Output: data/processed/features.parquet
 """
@@ -25,110 +27,102 @@ from pyspark.sql import functions as F
 
 SMOG_LEVELS = ["Low", "Moderate", "Severe", "Hazardous"]   # label 0, 1, 2, 3
 
-# Numeric features given to the models
-NUMERIC_FEATURES = [
-    # today's weather and activity
-    "temperature_c", "humidity_pct", "wind_speed_kmh", "rainfall_mm",
-    "traffic_level", "industrial_activity", "crop_burning_index",
-    # today's pollution
-    "pm25", "pm10", "co2_ppm", "no2_ppb", "so2_ppb", "co_ppm", "ozone_ppb", "aqi", "visibility_km",
-    # yesterday and the day before
-    "pm25_lag1", "pm25_lag2", "aqi_lag1", "aqi_lag2", "visibility_km_lag1",
-    # recent averages
-    "pm25_avg7", "aqi_avg7", "aqi_avg3", "aqi_max7", "crop_burning_avg7",
-    "rainfall_sum3", "wind_avg3", "humidity_avg3",
-    # change
-    "aqi_change_1d",
-    # calendar
-    "month", "day_of_week", "is_weekend", "doy_sin", "doy_cos",
-    "is_crop_burning_season", "is_smog_season",
+TODAY_FEATURES = [
+    "pm25", "pm10", "no2_ugm3", "so2_ugm3", "co_ugm3", "ozone_ugm3", "co2_ppm", "dust_ugm3",
+    "aqi", "visibility_km", "temperature_c", "humidity_pct", "wind_speed_kmh", "rainfall_mm",
+    "pm25_lag1", "pm25_lag2", "aqi_lag1", "aqi_lag2", "pm25_avg7", "aqi_avg3", "aqi_avg7", "aqi_max7",
+    "aqi_change_1d", "rainfall_sum3", "wind_avg3",
 ]
-CATEGORICAL_FEATURES = ["city", "season"]
+TARGET_DAY_FEATURES = [
+    "t_temperature_c", "t_humidity_pct", "t_wind_speed_kmh", "t_rainfall_mm",
+    "t_month", "t_doy_sin", "t_doy_cos", "t_is_weekend", "t_is_smog_season", "t_is_crop_burning_season",
+]
+NUMERIC_FEATURES = TODAY_FEATURES + TARGET_DAY_FEATURES + ["horizon"]
+CATEGORICAL_FEATURES = ["city", "t_season"]
 
 
 def smog_label(col):
-    """Turn the smog text into a number the classifier can learn (Low=0 ... Hazardous=3)."""
     expr = F.when(F.col(col) == SMOG_LEVELS[0], 0.0)
     for i, level in enumerate(SMOG_LEVELS[1:], start=1):
         expr = expr.when(F.col(col) == level, float(i))
     return expr
 
 
-def add_features(df, horizons):
+def calendar(date_col):
+    """Calendar features of a date column (used for the target day)."""
+    m, d = F.month(date_col), F.dayofmonth(date_col)
+    return {
+        "t_month": m.cast("double"),
+        "t_doy_sin": F.sin(2 * math.pi * F.dayofyear(date_col) / 365.25),
+        "t_doy_cos": F.cos(2 * math.pi * F.dayofyear(date_col) / 365.25),
+        "t_is_weekend": F.when(F.dayofweek(date_col) == 1, 1.0).otherwise(0.0),          # Sunday
+        "t_is_smog_season": F.when(m.isin(11, 12, 1) | ((m == 10) & (d >= 15)) | ((m == 2) & (d <= 15)), 1.0).otherwise(0.0),
+        "t_is_crop_burning_season": F.when(((m == 10) & (d >= 10)) | (m == 11) |
+                                           ((m == 4) & (d >= 15)) | ((m == 5) & (d <= 20)), 1.0).otherwise(0.0),
+        "t_season": F.when(m.isin(12, 1, 2), "Winter").when(m.isin(3, 4), "Spring").when(m.isin(5, 6), "Summer")
+                     .when(m.isin(7, 8, 9), "Monsoon").otherwise("Autumn"),
+    }
+
+
+def build(df, horizons):
     w = Window.partitionBy("city").orderBy("date")
-    w3 = w.rowsBetween(-2, 0)      # today + 2 days before
-    w7 = w.rowsBetween(-6, 0)      # today + 6 days before
-    month = F.month("date")
-    day = F.dayofmonth("date")
+    w3, w7 = w.rowsBetween(-2, 0), w.rowsBetween(-6, 0)
 
-    # ---------------- calendar ----------------
+    # ---------- today's history features ----------
     df = (df
-          .withColumn("month", month)
-          .withColumn("day_of_week", F.dayofweek("date"))                      # 1 = Sunday ... 7 = Saturday
-          .withColumn("is_weekend", F.when(F.dayofweek("date").isin(1, 7), 1).otherwise(0))
-          .withColumn("doy_sin", F.sin(2 * math.pi * F.dayofyear("date") / 365.25))
-          .withColumn("doy_cos", F.cos(2 * math.pi * F.dayofyear("date") / 365.25))
-          .withColumn("season",
-                      F.when(month.isin(12, 1, 2), "Winter")
-                       .when(month.isin(3, 4), "Spring")
-                       .when(month.isin(5, 6), "Summer")
-                       .when(month.isin(7, 8, 9), "Monsoon")
-                       .otherwise("Autumn"))
-          .withColumn("is_crop_burning_season",
-                      F.when(((month == 10) & (day >= 10)) | (month == 11) |
-                             ((month == 4) & (day >= 15)) | ((month == 5) & (day <= 20)), 1).otherwise(0))
-          .withColumn("is_smog_season",
-                      F.when(month.isin(11, 12, 1) | ((month == 10) & (day >= 15)) |
-                             ((month == 2) & (day <= 15)), 1).otherwise(0)))
-
-    # ---------------- yesterday's values (lags) ----------------
-    for c in ["pm25", "aqi"]:
-        df = df.withColumn(f"{c}_lag1", F.lag(c, 1).over(w)).withColumn(f"{c}_lag2", F.lag(c, 2).over(w))
-    df = df.withColumn("visibility_km_lag1", F.lag("visibility_km", 1).over(w))
-
-    # ---------------- recent averages ----------------
-    df = (df
+          .withColumn("pm25_lag1", F.lag("pm25", 1).over(w)).withColumn("pm25_lag2", F.lag("pm25", 2).over(w))
+          .withColumn("aqi_lag1", F.lag("aqi", 1).over(w)).withColumn("aqi_lag2", F.lag("aqi", 2).over(w))
           .withColumn("pm25_avg7", F.avg("pm25").over(w7))
-          .withColumn("aqi_avg7", F.avg("aqi").over(w7))
-          .withColumn("aqi_avg3", F.avg("aqi").over(w3))
+          .withColumn("aqi_avg3", F.avg("aqi").over(w3)).withColumn("aqi_avg7", F.avg("aqi").over(w7))
           .withColumn("aqi_max7", F.max("aqi").over(w7))
-          .withColumn("crop_burning_avg7", F.avg("crop_burning_index").over(w7))
+          .withColumn("aqi_change_1d", F.col("aqi") - F.col("aqi_lag1"))
           .withColumn("rainfall_sum3", F.sum("rainfall_mm").over(w3))
-          .withColumn("wind_avg3", F.avg("wind_speed_kmh").over(w3))
-          .withColumn("humidity_avg3", F.avg("humidity_pct").over(w3))
-          .withColumn("aqi_change_1d", F.col("aqi") - F.col("aqi_lag1")))
+          .withColumn("wind_avg3", F.avg("wind_speed_kmh").over(w3)))
 
-    # ---------------- targets: the future values ----------------
-    df = df.withColumn("smog_label", smog_label("smog_level"))
+    # ---------- one block of rows per horizon ----------
+    blocks = []
     for h in horizons:
-        df = (df
-              .withColumn(f"target_date_h{h}", F.date_add("date", h))
-              .withColumn(f"aqi_h{h}", F.lead("aqi", h).over(w).cast("double"))
-              .withColumn(f"visibility_km_h{h}", F.lead("visibility_km", h).over(w).cast("double"))
-              .withColumn(f"smog_level_h{h}", F.lead("smog_level", h).over(w)))
-        df = df.withColumn(f"smog_label_h{h}", smog_label(f"smog_level_h{h}"))
+        b = (df
+             .withColumn("horizon", F.lit(float(h)))
+             .withColumn("target_date", F.lead("date", h).over(w))
+             .withColumn("t_temperature_c", F.lead("temperature_c", h).over(w))
+             .withColumn("t_humidity_pct", F.lead("humidity_pct", h).over(w))
+             .withColumn("t_wind_speed_kmh", F.lead("wind_speed_kmh", h).over(w))
+             .withColumn("t_rainfall_mm", F.lead("rainfall_mm", h).over(w))
+             .withColumn("aqi_target", F.lead("aqi", h).over(w))
+             .withColumn("visibility_target", F.lead("visibility_km", h).over(w))
+             .withColumn("smog_level_target", F.lead("smog_level", h).over(w)))
+        for name, expr in calendar(F.col("target_date")).items():
+            b = b.withColumn(name, expr)
+        blocks.append(b)
 
-    # The first 2 days of each city have no "yesterday" values -> drop them
-    df = df.filter(F.col("aqi_lag2").isNotNull())
+    out = blocks[0]
+    for b in blocks[1:]:
+        out = out.unionByName(b)
 
-    # Make every numeric feature a decimal number (models need doubles)
+    out = (out
+           .filter((F.col("is_future") == 0) & F.col("aqi_lag2").isNotNull() & F.col("target_date").isNotNull())
+           .withColumn("smog_label_target", smog_label("smog_level_target"))
+           .withColumn("smog_label_today", smog_label("smog_level")))
     for c in NUMERIC_FEATURES:
-        df = df.withColumn(c, F.col(c).cast("double"))
-    return df
+        out = out.withColumn(c, F.col(c).cast("double"))
+    keep = (["date", "city", "target_date", "is_future"] + NUMERIC_FEATURES + ["t_season"] +
+            ["aqi_target", "visibility_target", "smog_level_target", "smog_label_target", "smog_label_today"])
+    return out.select(keep)
 
 
 def run(spark, cfg, logger):
     paths = cfg["paths"]
     horizons = cfg["targets"]["horizons"]
     df = spark.read.parquet(paths["clean_data"])
-    df = add_features(df, horizons)
+    feats = build(df, horizons)
+    feats.write.mode("overwrite").parquet(paths["features_data"])
 
-    n = df.count()
-    logger.info("Created %d features (%d numeric + %d categorical) and targets for horizons %s",
+    feats = spark.read.parquet(paths["features_data"])
+    n_train = feats.filter(F.col("aqi_target").isNotNull()).count()
+    n_forecast = feats.filter(F.col("aqi_target").isNull()).count()
+    logger.info("Created %d features (%d numeric + %d categorical) for horizons %s",
                 len(NUMERIC_FEATURES) + len(CATEGORICAL_FEATURES), len(NUMERIC_FEATURES),
                 len(CATEGORICAL_FEATURES), horizons)
-    logger.info("Feature table: %d rows", n)
-
-    df.write.mode("overwrite").parquet(paths["features_data"])
-    logger.info("Saved features -> %s", paths["features_data"])
-    return df
+    logger.info("Feature rows: %d with known outcome (for training/testing) + %d to forecast", n_train, n_forecast)
+    return feats
